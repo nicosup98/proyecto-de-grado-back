@@ -5,7 +5,8 @@
       "jsr:@hono/hono@^4.5.11": "jsr:@hono/hono@4.5.11",
       "jsr:@std/assert@1": "jsr:@std/assert@1.0.4",
       "jsr:@std/dotenv@^0.225.2": "jsr:@std/dotenv@0.225.2",
-      "jsr:@std/internal@^1.0.3": "jsr:@std/internal@1.0.3"
+      "jsr:@std/internal@^1.0.3": "jsr:@std/internal@1.0.3",
+      "npm:dayjs@1.11.13": "npm:dayjs@1.11.13"
     },
     "jsr": {
       "@hono/hono@4.5.11": {
@@ -22,6 +23,12 @@
       },
       "@std/internal@1.0.3": {
         "integrity": "208e9b94a3d5649bd880e9ca38b885ab7651ab5b5303a56ed25de4755fb7b11e"
+      }
+    },
+    "npm": {
+      "dayjs@1.11.13": {
+        "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==",
+        "dependencies": {}
       }
     }
   },

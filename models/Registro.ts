@@ -1,3 +1,6 @@
+/**
+ * tabla de bd
+ */
 export interface Registro {
     id: number
     email: string
