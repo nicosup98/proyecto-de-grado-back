@@ -1,4 +1,4 @@
-type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "rectorado" | "cancha"
+type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha"
 type Persona = "estudiante" | "profesor" | "empleado" | "empleado de mantenimiento" | "visitante"
 type Genero = "masculino" | "femenino" | "otro"
 /**

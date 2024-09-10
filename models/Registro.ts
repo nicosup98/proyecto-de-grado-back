@@ -4,7 +4,7 @@
 export interface Registro {
     id: number
     email: string
-    huella_azul: number
-    huella_gris: number
+    huella_azul: number // validar
+    huella_gris: number //validar
     huella_total: number
 }
