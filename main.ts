@@ -2,13 +2,12 @@ import { Context, Hono } from "@hono/hono";
 import { jwt,sign } from "@hono/hono/jwt"
 import type { JwtVariables } from "@hono/hono/jwt"
 import dayjs from "@dayjs"
-
+import { jwt_secret as secret} from "./utils/env.ts"
 const app = new Hono<{Variables: JwtVariables}>();
 
 
 
-app.use("/admin/*",(c,next)=>{
-  const secret = "secret" // generar una key para el secret de jwt
+app.use("/admin/*",(c,next)=>{ 
   const jwtMidleware = jwt({secret})
 
   return jwtMidleware(c,next)
@@ -31,8 +30,6 @@ app.post("/resultados/email",async (c: Context)=> {
 
 app.post("/login/admin",async (c: Context)=> {
   const admin: {username: string, password: string} = await c.req.json()
-  const secret = "secret" // generar una key para el secret de jwt
-
 
   // verificar con query sql
 
@@ -42,10 +39,10 @@ app.post("/login/admin",async (c: Context)=> {
 
 app.get("/admin/dshboard", async (c)=>{
   const payload = c.get("jwtPayload")
-  const token = "token" // colocar esto en un archivo y exportarlo para evitar repeticion
-  //verificar con una funcion el timeout y redireccionar al login
   
-  const _refreshToken = await sign({...payload, timeout: dayjs().add(1,"hour").format()},token)
+  //verificar con una funcion el timeout y redireccionar al login http 403
+  
+  const _refreshToken = await sign({...payload, timeout: dayjs().add(1,"hour").format()},secret)
   //consultar en bd la data
   return c.text("dashboard")
 })
