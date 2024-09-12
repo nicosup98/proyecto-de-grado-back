@@ -3,22 +3,21 @@ import { jwt,sign } from "@hono/hono/jwt"
 import type { JwtVariables } from "@hono/hono/jwt"
 import dayjs from "@dayjs"
 import { jwt_secret as secret} from "./utils/env.ts"
+import { Form } from "./models/Form.ts";
 const app = new Hono<{Variables: JwtVariables}>();
 
 
 
-app.use("/admin/*",(c,next)=>{ 
-  const jwtMidleware = jwt({secret})
-
-  return jwtMidleware(c,next)
-})
+app.use("/admin/*",jwt({secret}))
 
 app.get("/", (c: Context) => {
   return c.text("hello");
 });
 
 app.post("/send_form", async (c: Context) => {
-  const _body = await c.req.json();
+  const body: Form = await c.req.json();
+
+
   //ver consumo de agua por s para calcular las cosas
 });
 
@@ -42,7 +41,7 @@ app.get("/admin/dshboard", async (c)=>{
   
   //verificar con una funcion el timeout y redireccionar al login http 403
   
-  const _refreshToken = await sign({...payload, timeout: dayjs().add(1,"hour").format()},secret)
+  const _refreshToken = await sign({...payload, timeout: dayjs().add(30,"minute").format()},secret)
   //consultar en bd la data
   return c.text("dashboard")
 })

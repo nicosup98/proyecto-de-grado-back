@@ -10,5 +10,9 @@ export function getRegistroByEmail(email: string, client: Client) {
 }
 
 export function insertRegistro(data:Partial<Form>, client: Client ){
-    return client.execute("INSERT into Registro(email,huella_azul,huella_gris) VALUES(?,?,?)",[...Object.values(data)])
+    return client.execute("INSERT into Registro(email,huella_total,bloque_preferido) VALUES(?,?,?)",[...Object.values(data)])
+}
+
+export function deleteRegistro(id: number, client: Client) {
+    return client.execute("DELETE from Registro where id=?",[id])
 }
