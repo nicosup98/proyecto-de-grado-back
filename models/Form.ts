@@ -1,4 +1,4 @@
-export type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha"
+export type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha" | "centro de fotocopiado" | "ninguno"
 type Persona = "estudiante" | "profesor" | "empleado" | "empleado de mantenimiento" | "visitante"
 type Genero = "masculino" | "femenino" | "otro"
 /**
@@ -8,7 +8,8 @@ export interface Form{
     email: string
     tiempo_lavamanos: number
     cantidad_veces_inodoro: number
-    cantidad_veces_urinario?: number
+    cantidad_veces_urinario?: number,
+    tiempo_bebedero: number
     bloque_preferido?: Bloque
     tipo_persona: Persona
     genero: Genero
@@ -33,4 +34,24 @@ interface PuntoRojo {
     nombre: string,
     litros: number,
     tiempo_uso: number
+}
+
+export interface ConsumoCalculado {
+    email: string,
+    genero: Genero;
+    consumo_detalles: ConsumoDetalles,
+    consumo_total: {
+        semanal: number,
+        mensual: number
+    }
+}
+
+export interface ConsumoDetalles {
+    litros_inodoro: number;
+    litros_lavamanos: number;
+    litros_bebedero: number;
+    bloque_preferido: Bloque;
+    litros_urinarios: number;
+    puntos_rojos: number
+
 }

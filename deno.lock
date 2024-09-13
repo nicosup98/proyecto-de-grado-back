@@ -6,6 +6,8 @@
       "jsr:@std/assert@1": "jsr:@std/assert@1.0.4",
       "jsr:@std/dotenv@^0.225.2": "jsr:@std/dotenv@0.225.2",
       "jsr:@std/internal@^1.0.3": "jsr:@std/internal@1.0.3",
+      "jsr:@ts-rex/bcrypt@^1.0.3": "jsr:@ts-rex/bcrypt@1.0.3",
+      "npm:convert": "npm:convert@5.4.0",
       "npm:dayjs@1.11.13": "npm:dayjs@1.11.13"
     },
     "jsr": {
@@ -23,9 +25,16 @@
       },
       "@std/internal@1.0.3": {
         "integrity": "208e9b94a3d5649bd880e9ca38b885ab7651ab5b5303a56ed25de4755fb7b11e"
+      },
+      "@ts-rex/bcrypt@1.0.3": {
+        "integrity": "1a172769df1a357032e78cc13205dc34cc13f2307a2b81458bf988904ec8db02"
       }
     },
     "npm": {
+      "convert@5.4.0": {
+        "integrity": "sha512-a0fKxR/9dxSDlkuHAwj/CI8cuSU9BGNVYb5flO2tvlUyw5arn/AIfOGHBTXR9QnOVHsvC8NJ5/kI4mrmh5XjVg==",
+        "dependencies": {}
+      },
       "dayjs@1.11.13": {
         "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==",
         "dependencies": {}
@@ -33,9 +42,12 @@
     }
   },
   "redirects": {
+    "https://cdn.skypack.dev/convert@5": "https://cdn.skypack.dev/new/convert@v5.4.0/dist=es2019",
+    "https://cdn.skypack.dev/new/convert@v5.4.0/dist=es2019": "https://cdn.skypack.dev/-/convert@v5.4.0-V9pabCedCtiedoc22cQ2/dist=es2019,mode=imports/optimized/convert.js",
     "https://deno.land/x/mysql/mod.ts": "https://deno.land/x/mysql@v2.12.1/mod.ts"
   },
   "remote": {
+    "https://cdn.skypack.dev/-/convert@v5.4.0-V9pabCedCtiedoc22cQ2/dist=es2019,mode=imports/optimized/convert.js": "12b578b27b34274161c9563b71a9d3de36f28be3299bc3ceab58e409f33c66c0",
     "https://deno.land/std@0.104.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
     "https://deno.land/std@0.104.0/async/deadline.ts": "1d6ac7aeaee22f75eb86e4e105d6161118aad7b41ae2dd14f4cfd3bf97472b93",
     "https://deno.land/std@0.104.0/async/debounce.ts": "b2f693e4baa16b62793fd618de6c003b63228db50ecfe3bd51fc5f6dc0bc264b",
@@ -53,6 +65,7 @@
     "https://deno.land/std@0.104.0/fs/exists.ts": "b0d2e31654819cc2a8d37df45d6b14686c0cc1d802e9ff09e902a63e98b85a00",
     "https://deno.land/std@0.104.0/hash/_wasm/hash.ts": "313a4820227f1c45fa7204d9c28731b4f8ce97cdcc5f1e7e4efcdf2d70540d32",
     "https://deno.land/std@0.104.0/hash/_wasm/wasm.js": "792f612fbb9998e267f9ae3f82ed72444305cb9c77b5bbf7ff6517fd3b606ed1",
+    "https://deno.land/std@0.104.0/hash/hasher.ts": "57a9ec05dd48a9eceed319ac53463d9873490feea3832d58679df6eec51c176b",
     "https://deno.land/std@0.104.0/hash/mod.ts": "dd339a26b094032f38d71311b85745e8d19f2085364794c1877057e057902dd9",
     "https://deno.land/std@0.104.0/io/buffer.ts": "3ead6bb11276ebcf093c403f74f67fd2205a515dbbb9061862c468ca56f37cd8",
     "https://deno.land/std@0.104.0/io/bufio.ts": "6024117aa37f8d21a116654bd5ca5191d803f6492bbc744e3cee5054d0e900d1",
@@ -101,6 +114,8 @@
       "jsr:@hono/hono@^4.5.11",
       "jsr:@std/assert@1",
       "jsr:@std/dotenv@^0.225.2",
+      "jsr:@ts-rex/bcrypt@^1.0.3",
+      "npm:convert",
       "npm:dayjs@1.11.13"
     ]
   }
