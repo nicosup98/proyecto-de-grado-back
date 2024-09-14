@@ -25,6 +25,7 @@ export function calcular(
         email: data.email,
         consumo_detalles,
         genero: data.genero,
+        tipo_usuario: data.tipo_persona,
         consumo_total: {
             semanal: consumo_total_semanal,
             mensual: consumo_total_semanal * convert(1,"month").to("week")

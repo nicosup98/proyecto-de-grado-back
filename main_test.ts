@@ -3,17 +3,21 @@ import {Consumo, Form} from "./models/Form.ts"
 import { calcular } from "./services/calcularData.ts"
 import dayjs from "@dayjs";
 import {convert} from "@convert";
+import { connect } from "./db/Connection.ts"
+import { insertRegistro,getRegistroById } from "./db/Registro.ts"
+import { Registro } from "./models/Registro.ts";
+import { testClient } from "@hono/hono/testing"
 
 
 const fakeForm: Form = {
     cantidad_veces_inodoro: 2,
-    email: "test@email.com",
+    email: "test2@test.com",
     bloque_preferido: "B",
     genero: "masculino",
     tiempo_bebedero: 30,
     tiempo_lavamanos: 60,
     tipo_persona: "estudiante",
-    cantidad_veces_urinario: 0,
+    cantidad_veces_urinario: 1,
 
 } 
 
@@ -28,6 +32,27 @@ const fakeConsumo: Consumo = {
     urinario_litro_jalada: 4
 }
 
+Deno.test("get registros",async ()=> {
+    const client = await connect()
+    const registro: Registro[] = await getRegistroById(2,client)
+
+    console.log(registro)
+    assert(registro[0].id)
+    await client.close()
+})
+
+Deno.test("insert en db", async ()=> {
+    const calculo = calcular(fakeForm,fakeConsumo)
+    const client = await connect()
+    const resultado = await insertRegistro(calculo,client)
+
+    assert(resultado.affectedRows)
+
+    console.log(resultado)
+    await client.close()
+
+})
+
 Deno.test("test de calculo de gasto de agua",()=> {
     
     const resultado = calcular(fakeForm,fakeConsumo)
@@ -36,3 +61,4 @@ Deno.test("test de calculo de gasto de agua",()=> {
     assert(resultado.consumo_detalles.litros_bebedero === 30 * 0.3)
     console.log(resultado)
 })
+

@@ -10,7 +10,7 @@ export function getRegistroByEmail(email: string, client: Client) {
 }
 
 export function insertRegistro(data:ConsumoCalculado, client: Client ){
-    return client.execute("INSERT into Registro(email,gasto_agua,bloque_preferido) VALUES(?,?,?)",[data.email,data.consumo_total,data.consumo_detalles.bloque_preferido])
+    return client.execute(`INSERT INTO Registro (email, tipo_usuario, genero, gasto_agua, bloque_preferido,gasto_agua_semanal) values ('${data.email}', '${data.tipo_usuario}', '${data.genero}', ?, '${data.consumo_detalles.bloque_preferido}', ?)`,[data.consumo_total.mensual,data.consumo_total.semanal])
 }
 
 export function deleteRegistro(id: number, client: Client) {

@@ -39,6 +39,7 @@ interface PuntoRojo {
 export interface ConsumoCalculado {
     email: string,
     genero: Genero;
+    tipo_usuario: Persona
     consumo_detalles: ConsumoDetalles,
     consumo_total: {
         semanal: number,
