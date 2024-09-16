@@ -2,7 +2,7 @@ import { Context, Hono } from "@hono/hono";
 import { jwt,sign,verify as jwt_verify } from "@hono/hono/jwt"
 import type { JwtVariables } from "@hono/hono/jwt"
 import dayjs from "@dayjs"
-import { jwt_secret, jwt_secret as secret} from "./utils/env.ts"
+import { jwt_secret as secret} from "./utils/env.ts"
 import { Form } from "./models/Form.ts";
 import { calcular } from "./services/calcularData.ts"
 import { connect } from "./db/Connection.ts"
@@ -60,7 +60,7 @@ app.get("/reset_formulario",async c=> {
     return c.text("token no valido",403)
   }
   try{
-    await jwt_verify(token,jwt_secret)
+    await jwt_verify(token,secret)
   } catch(e) {
     console.error(e)
     return c.text("ocurrio un error al verificar el jwt",500)
@@ -80,7 +80,7 @@ app.post("/login/admin",async (c: Context)=> {
   }
 
 
-  return c.text(await sign({...admin, timeout: dayjs().add(30,"minute").format() },secret))
+  return c.text(await sign({...admin, password:"", timeout: dayjs().add(30,"minute").format() },secret))
 
 })
 
@@ -91,9 +91,13 @@ app.get("/admin/dashboard", async (c)=>{
   if(dayjs().isAfter(dayjs(payload.timeout))){
     return c.text("sesion expirada",403)
   }
-  const _refreshToken = await sign({...payload, timeout: dayjs().add(30,"minute").format()},secret) // pasar al front
+  const _refreshToken = await sign({...payload,password:"", timeout: dayjs().add(30,"minute").format()},secret) // pasar al front
   //consultar en bd la data
   return c.text("dashboard")
 })
+
+export {
+  app
+}
 
 Deno.serve({ port: 4000 }, app.fetch);
