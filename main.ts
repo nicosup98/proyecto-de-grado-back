@@ -14,8 +14,12 @@ import { Registro } from "./models/Registro.ts";
 const app = new Hono<{Variables: JwtVariables}>();
 
 
-
-app.use("/admin/*",jwt({secret}))
+app.use('/admin/*', (c, next) => {
+  const jwtMiddleware = jwt({
+    secret
+  })
+  return jwtMiddleware(c, next)
+})
 
 app.get("/", (c: Context) => {
   return c.text("hello");

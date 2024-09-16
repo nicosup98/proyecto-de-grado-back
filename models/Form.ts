@@ -22,7 +22,7 @@ export interface Consumo {
     lavamano_litro_s: number
     poceta_litro_jalada:number
     regadera_litro_s: number
-    dispensador_litro_s: number
+    bebedero_litro_s: number
     manguera_litro_s: number //mirar bien el nombre
     urinario_litro_jalada: number
     create_at: string

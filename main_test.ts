@@ -7,6 +7,8 @@ import { app } from "./main.ts"
 import { connect } from "./db/Connection.ts";
 import { Registro } from "./models/Registro.ts";
 import { getRegistroById } from "./db/Registro.ts";
+import { jwt_secret as secret } from "./utils/env.ts"
+import { jwt } from "@hono/hono/jwt";
 
 
 const fakeForm: Form = {
@@ -24,7 +26,7 @@ const fakeForm: Form = {
 const fakeConsumo: Consumo = {
     create_at: dayjs().format(),
     updated_at: dayjs().format(),
-    dispensador_litro_s: 0.3,
+    bebedero_litro_s: 0.3,
     lavamano_litro_s: 6 / convert(1,"minute").to("second"),
     manguera_litro_s: 1000 / convert(1,"hour").to("second"),
     poceta_litro_jalada: 6,
@@ -59,25 +61,26 @@ Deno.test("send form test",async ()=>{
 
 const fakeForm2: Form = {
     cantidad_veces_inodoro: 3,
-    email: "test22@test.com",
+    email: "test3@test.com",
     bloque_preferido: "B",
-    genero: "masculino",
+    genero: "femenino",
     tiempo_bebedero: 15,
-    tiempo_lavamanos: 30,
-    tipo_persona: "profesor",
-    cantidad_veces_urinario: 1,
+    tiempo_lavamanos: 50,
+    tipo_persona: "estudiante",
 
 } 
     const resp = await app.request("/send_form",{
         method: "POST",
-        body: JSON.stringify(fakeForm2)
+        body: JSON.stringify(fakeForm2),
+
     })
 
     const data: ConsumoCalculado = await resp.json()
 
     console.log(data)
     assert(resp.status === 200)
-    assert(data.tipo_usuario === "profesor")
+    assert(data.consumo_total.mensual)
+    assert(data.consumo_total.semanal)
 
 
 })
