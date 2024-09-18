@@ -11,8 +11,15 @@ export function calcular(
         bloque_preferido: data.bloque_preferido || "ninguno",
         litros_urinarios: consumo.urinario_litro_jalada *
             (data.cantidad_veces_urinario || 0),
-        puntos_rojos: data.punto_rojo?.reduce((pv,cr) => pv + (cr.litros * cr.tiempo_uso),0) ||
-            0, //ver a que tiempo se cponvierte
+        puntos_rojos: data.punto_rojo?.reduce((pv,cr) =>{
+            if(cr.tipo === 'otro') {
+                return pv + (cr.litros || 0)
+            }
+            return pv + (consumo[cr.tipo] * cr.tiempo_uso)
+
+
+        },0) || //momentaneo para que no chille
+            0, //agregar en el front una lista que ponga los posibles gastos de agua y si selecciona otro que agregue los litros de agua para asi hacer el calculo
     };
 
     const consumo_total_semanal = consumo_detalles.litros_bebedero +
@@ -27,8 +34,8 @@ export function calcular(
         genero: data.genero,
         tipo_usuario: data.tipo_persona,
         consumo_total: {
-            semanal: consumo_total_semanal,
-            mensual: consumo_total_semanal * convert(1,"month").to("week")
+            semanal: Number(consumo_total_semanal.toFixed(2)),
+            mensual: Number((consumo_total_semanal * convert(1,"month").to("week")).toFixed(2))
         }
     };
 }

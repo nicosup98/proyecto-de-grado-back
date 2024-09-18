@@ -1,6 +1,8 @@
 export type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha" | "centro de fotocopiado" | "ninguno"
 type Persona = "estudiante" | "profesor" | "empleado" | "empleado de mantenimiento" | "visitante"
 type Genero = "masculino" | "femenino" | "otro"
+
+type RecordType = Record<string,any>
 /**
  * body del formulario
  */
@@ -18,7 +20,7 @@ export interface Form{
 /**
  * tabla de bd
  */
-export interface Consumo {
+export interface Consumo extends RecordType {
     lavamano_litro_s: number
     poceta_litro_jalada:number
     regadera_litro_s: number
@@ -27,12 +29,15 @@ export interface Consumo {
     urinario_litro_jalada: number
     create_at: string
     updated_at: string
-}
+} 
+
+
 
 
 interface PuntoRojo {
     nombre: string,
-    litros: number,
+    tipo: string
+    litros?: number,
     tiempo_uso: number
 }
 

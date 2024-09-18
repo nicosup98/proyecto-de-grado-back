@@ -7,13 +7,11 @@ import { app } from "./main.ts"
 import { connect } from "./db/Connection.ts";
 import { Registro } from "./models/Registro.ts";
 import { getRegistroById } from "./db/Registro.ts";
-import { jwt_secret as secret } from "./utils/env.ts"
-import { jwt } from "@hono/hono/jwt";
 
 
 const fakeForm: Form = {
     cantidad_veces_inodoro: 2,
-    email: "test22@test.com",
+    email: "test222@test.com",
     bloque_preferido: "B",
     genero: "masculino",
     tiempo_bebedero: 30,
@@ -49,19 +47,56 @@ const fakeConsumo: Consumo = {
 // })
 
 Deno.test("test de calculo de gasto de agua",()=> {
-    
+    const fakeFormAlt: Form = {
+        ...fakeForm,
+        bloque_preferido: "G",
+        genero: "femenino",
+        email: "chikatestxd@test.com",
+        cantidad_veces_urinario: 0
+    }
+  
     const resultado = calcular(fakeForm,fakeConsumo)
+    const resultado2 = calcular(fakeFormAlt,fakeConsumo)
     assert(resultado.consumo_detalles.litros_inodoro === 6 * 2)
     assert(resultado.consumo_detalles.litros_lavamanos === 6 / convert(1,"minute").to("second") * 60)  
     assert(resultado.consumo_detalles.litros_bebedero === 30 * 0.3)
-    console.log(resultado)
+    
+    assert(resultado2.consumo_detalles.litros_inodoro === 6 * 2)
+    assert(resultado2.consumo_detalles.litros_lavamanos === 6 / convert(1,"minute").to("second") * 60)  
+    assert(resultado2.consumo_detalles.litros_bebedero === 30 * 0.3)
+    console.log({resultado,resultado2})
+})
+
+Deno.test('test calculo con puntos rojos',()=>{
+    const fakeFormPR: Form = {
+        ...fakeForm,
+        tipo_persona:"empleado de mantenimiento",
+        punto_rojo:[
+            {
+                nombre:"test",
+                tiempo_uso: 4,
+                tipo:"manguera_litro_s"
+            },
+            {
+                nombre:'test 2',
+                tipo: 'otro',
+                tiempo_uso: 3,
+                litros: 1
+            }
+        ]
+    }
+
+    const calculo = calcular(fakeFormPR,fakeConsumo)
+    const pr_resultado = (fakeConsumo.manguera_litro_s * 4) + 1
+    console.log(calculo)
+    assert(calculo.consumo_detalles.puntos_rojos === pr_resultado)
 })
 
 Deno.test("send form test",async ()=>{
 
 const fakeForm2: Form = {
     cantidad_veces_inodoro: 3,
-    email: "test3@test.com",
+    email: "test33@test.com",
     bloque_preferido: "B",
     genero: "femenino",
     tiempo_bebedero: 15,
