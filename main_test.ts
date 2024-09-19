@@ -70,7 +70,7 @@ Deno.test("test de calculo de gasto de agua",()=> {
 Deno.test('test calculo con puntos rojos',()=>{
     const fakeFormPR: Form = {
         ...fakeForm,
-        tipo_persona:"empleado de mantenimiento",
+        tipo_persona:"mantenimiento",
         punto_rojo:[
             {
                 nombre:"test",

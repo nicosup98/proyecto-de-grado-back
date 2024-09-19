@@ -1,5 +1,5 @@
 export type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha" | "centro de fotocopiado" | "ninguno"
-type Persona = "estudiante" | "profesor" | "empleado" | "empleado de mantenimiento" | "visitante"
+type Persona = "estudiante" | "profesor" | "personal" | "mantenimiento" | "visitante"
 type Genero = "masculino" | "femenino" | "otro"
 
 type RecordType = Record<string,any>
