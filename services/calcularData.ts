@@ -8,7 +8,7 @@ export function calcular(
         litros_inodoro: consumo.poceta_litro_jalada * data.cantidad_veces_inodoro,
         litros_lavamanos: consumo.lavamano_litro_s * data.tiempo_lavamanos,
         litros_bebedero: consumo.bebedero_litro_s * data.tiempo_bebedero, // ver a que tiempo se convierte
-        bloque_preferido: data.bloque_preferido || "ninguno",
+        bloque_preferido: data.bloque_preferido ,
         litros_urinarios: consumo.urinario_litro_jalada *
             (data.cantidad_veces_urinario || 0),
         puntos_rojos: data.punto_rojo?.reduce((pv,cr) =>{

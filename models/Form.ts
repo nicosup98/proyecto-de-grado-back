@@ -12,7 +12,7 @@ export interface Form{
     cantidad_veces_inodoro: number
     cantidad_veces_urinario?: number,
     tiempo_bebedero: number
-    bloque_preferido?: Bloque
+    bloque_preferido: Bloque
     tipo_persona: Persona
     genero: Genero
     punto_rojo?:PuntoRojo[]
