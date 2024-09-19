@@ -11,9 +11,10 @@ import { hash } from "@ts-rex/bcrypt"
 import { getUserByCredentials } from "./db/Admin.ts"
 import { getConsumo } from "./db/Consumo.ts";
 import { Registro } from "./models/Registro.ts";
+import { cors } from '@hono/hono/cors'
 const app = new Hono<{Variables: JwtVariables}>();
 
-
+app.use('/*',cors({origin: '*'}))
 app.use('/admin/*', (c, next) => {
   const jwtMiddleware = jwt({
     secret

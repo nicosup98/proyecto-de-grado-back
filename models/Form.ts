@@ -1,4 +1,4 @@
-export type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha" | "centro de fotocopiado" | "ninguno"
+export type Bloque = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "rectorado" | "cancha" | "Feria de comida" | "Centro de mantenimiento" | 'Vivero'
 type Persona = "estudiante" | "profesor" | "personal" | "mantenimiento" | "visitante"
 type Genero = "masculino" | "femenino" | "otro"
 
