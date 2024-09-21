@@ -35,18 +35,6 @@ const fakeConsumo: Consumo = {
 
 
 
-// Deno.test("insert en db", async ()=> {
-//     const calculo = calcular(fakeForm,fakeConsumo)
-//     const client = await connect()
-//     const resultado = await insertRegistro(calculo,client)
-
-//     assert(resultado.affectedRows)
-
-//     console.log(resultado)
-//     await client.close()
-
-// })
-
 Deno.test("test de calculo de gasto de agua",()=> {
     const fakeFormAlt: Form = {
         ...fakeForm,
@@ -120,6 +108,49 @@ const fakeForm2: Form = {
 
 
 })
+
+
+Deno.test("insertar formulario con puntos rojos", async () => {
+    const formConPuntosRojos: Form = {
+        cantidad_veces_inodoro: 2,
+        email: "test_puntos_rojos@ejemplo.com",
+        bloque_preferido: "A",
+        genero: "masculino",
+        tiempo_bebedero: 20,
+        tiempo_lavamanos: 45,
+        tipo_persona: "mantenimiento",
+        punto_rojo: [
+            {
+                nombre: "Manguera jardín",
+                tiempo_uso: 10,
+                tipo: "manguera_litro_s"
+            },
+            {
+                nombre: "Limpieza especial",
+                tipo: "otro",
+                tiempo_uso: 5,
+                litros: 20
+            }
+        ]
+    }
+
+    const respuesta = await app.request("/send_form", {
+        method: "POST",
+        body: JSON.stringify(formConPuntosRojos),
+    })
+
+    const datos: ConsumoCalculado = await respuesta.json()
+
+    console.log("Resultado del formulario con puntos rojos:", datos)
+    assert(respuesta.status === 200)
+    assert(datos.consumo_total.mensual > 0)
+    assert(datos.consumo_total.semanal > 0)
+    assert(datos.consumo_detalles.puntos_rojos > 0)
+    assert(datos.tipo_usuario === "mantenimiento")
+})
+
+
+
 
 Deno.test("get registros",async ()=> {
     const client = await connect()

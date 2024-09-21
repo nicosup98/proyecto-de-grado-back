@@ -11,7 +11,7 @@ export function getRegistroByEmail(email: string, client: Client): Promise<Regis
 }
 
 export function insertRegistro(data:ConsumoCalculado, client: Client ){
-    return client.execute(`INSERT INTO Registro (email, tipo_usuario, genero, gasto_agua, bloque_preferido,gasto_agua_semanal) values ('${data.email}', '${data.tipo_usuario}', '${data.genero}', ?, '${data.consumo_detalles.bloque_preferido}', ?)`,[data.consumo_total.mensual,data.consumo_total.semanal])
+    return client.execute(`INSERT INTO Registro (email, tipo_usuario, genero, gasto_agua, bloque_preferido,gasto_agua_semanal, litros_inodoros, litros_lavamanos, litros_bebederos,litros_urinarios,litros_puntos_rojos) values ('${data.email}', '${data.tipo_usuario}', '${data.genero}', ?, '${data.consumo_detalles.bloque_preferido}', ?,?,?,?,?,?)`,[data.consumo_total.mensual,data.consumo_total.semanal,data.consumo_detalles.litros_inodoro,data.consumo_detalles.litros_lavamanos,data.consumo_detalles.litros_bebedero,data.consumo_detalles.litros_urinarios,data.consumo_detalles.puntos_rojos])
 }
 
 export function deleteRegistro(id: number, client: Client) {
