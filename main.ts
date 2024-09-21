@@ -21,7 +21,7 @@ app.use('/admin/*', (c, next) => {
   })
   return jwtMiddleware(c, next)
 })
-      
+
 app.get("/", (c: Context) => {
   return c.text("hello");
 });
@@ -55,6 +55,7 @@ app.post("/resultados/email",async (c: Context)=> {
   const client = await connect()
   const resp: Registro[] = await getRegistroByEmail(email,client)
   const status = resp.length == 0 ? 404 : 200
+  await client.close()
   return c.json(resp,status)
 })
 

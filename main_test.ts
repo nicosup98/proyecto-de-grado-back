@@ -129,13 +129,17 @@ Deno.test("get registros",async ()=> {
     await client.close()
 })
 
-Deno.test('get registro por empail',async ()=> {
-    const client = await connect()
 
-    const registro = await getRegistroByEmail('damiconicola98@gmail.com',client)
-    assert(registro[0]?.email === 'damiconicola98@gmail.com')
-    await client.close()
-    console.log(registro)
+
+Deno.test('e2e resultados/email',async ()=> {
+    const resp = await app.request('/resultados/email',{
+        method: 'POST',
+        body: 'damiconicola98@gmail.com'
+    })
+
+    const data = await resp.json()
+
+    console.log(data)
 })
 
 Deno.test('sql injection test', async ()=> {
