@@ -56,7 +56,7 @@ app.post("/resultados/email",async (c: Context)=> {
   const resp: Registro[] = await getRegistroByEmail(email,client)
   const status = resp.length == 0 ? 404 : 200
   await client.close()
-  return c.json(JSON.stringify(resp),status)
+  return c.json(resp,status,{"Content-Type":"application/json"})
 })
 
 app.get("/reset_formulario",async c=> {
