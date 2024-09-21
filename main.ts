@@ -21,7 +21,7 @@ app.use('/admin/*', (c, next) => {
   })
   return jwtMiddleware(c, next)
 })
-
+      
 app.get("/", (c: Context) => {
   return c.text("hello");
 });

@@ -6,7 +6,7 @@ import {convert} from "@convert";
 import { app } from "./main.ts"
 import { connect } from "./db/Connection.ts";
 import { Registro } from "./models/Registro.ts";
-import { getRegistroById } from "./db/Registro.ts";
+import { getRegistroByEmail, getRegistroById } from "./db/Registro.ts";
 
 
 const fakeForm: Form = {
@@ -127,5 +127,21 @@ Deno.test("get registros",async ()=> {
     console.log(registro)
     assert(registro[0].id)
     await client.close()
+})
+
+Deno.test('get registro por empail',async ()=> {
+    const client = await connect()
+
+    const registro = await getRegistroByEmail('damiconicola98@gmail.com',client)
+    assert(registro[0]?.email === 'damiconicola98@gmail.com')
+    await client.close()
+    console.log(registro)
+})
+
+Deno.test('sql injection test', async ()=> {
+    const client = await connect()
+    const registro = await getRegistroByEmail(`" or 1=1`,client)
+    await client.close()
+    console.log(registro)
 })
 

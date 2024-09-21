@@ -1,12 +1,13 @@
 import { Client } from "@mysql";
 import { ConsumoCalculado } from "../models/Form.ts"
+import { Registro } from "../models/Registro.ts";
 
 export function getRegistroById(id: number, client: Client) {
     return client.query("SELECT * FROM Registro where id = ?",[id])
 }
 
-export function getRegistroByEmail(email: string, client: Client) {
-    return client.query("SELECT * FROM Registro where email = ?",[email])
+export function getRegistroByEmail(email: string, client: Client): Promise<Registro[]> {
+    return client.query(`SELECT * FROM Registro where email = '${email}'`,)
 }
 
 export function insertRegistro(data:ConsumoCalculado, client: Client ){
