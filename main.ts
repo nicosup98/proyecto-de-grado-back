@@ -12,6 +12,7 @@ import { getUserByCredentials } from "./db/Admin.ts"
 import { getConsumo } from "./db/Consumo.ts";
 import { Registro } from "./models/Registro.ts";
 import { cors } from '@hono/hono/cors'
+import { validarEmail } from "./utils/email.ts";
 const app = new Hono<{Variables: JwtVariables}>();
 
 app.use('/*',cors({origin: '*'}))
@@ -49,14 +50,19 @@ app.post("/send_form", async (c: Context) => {
 });
 
 
-app.post("/resultados/email",async (c: Context)=> {
-  const email =  await c.req.text()
-  //si el email esta registrado devuelve la data si no, devuelve 404 con body vacio
+app.post("/resultados/email", async (c: Context) => {
+  const email = await c.req.text()
+  
+  // Validación del email
+  if(!validarEmail(email)) {
+    return c.json({error: "Email no válido"}, 400)
+  }
+
   const client = await connect()
-  const resp: Registro[] = await getRegistroByEmail(email,client)
+  const resp: Registro[] = await getRegistroByEmail(email, client)
   const status = resp.length == 0 ? 404 : 200
   await client.close()
-  return c.json(resp,status,{"Content-Type":"application/json"})
+  return c.json(resp, status, {"Content-Type": "application/json"})
 })
 
 app.get("/reset_formulario",async c=> {

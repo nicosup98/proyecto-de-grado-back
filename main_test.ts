@@ -6,7 +6,8 @@ import {convert} from "@convert";
 import { app } from "./main.ts"
 import { connect } from "./db/Connection.ts";
 import { Registro } from "./models/Registro.ts";
-import { getRegistroByEmail, getRegistroById } from "./db/Registro.ts";
+import { getRegistroById } from "./db/Registro.ts";
+import { validarEmail } from "./utils/email.ts";
 
 
 const fakeForm: Form = {
@@ -138,14 +139,82 @@ Deno.test('e2e resultados/email',async ()=> {
     })
 
     const data = await resp.json()
-
+    assert(resp.status === 200)
+    assert(data.length > 0)
     console.log(data)
 })
 
-Deno.test('sql injection test', async ()=> {
-    const client = await connect()
-    const registro = await getRegistroByEmail(`" or 1=1`,client)
-    await client.close()
-    console.log(registro)
-})
+Deno.test('validación de correos electrónicos', () => {
+  const correosValidos = [
+    'usuario@ejemplo.com',
+    'usuario.nombre@dominio.co',
+    'usuario+etiqueta@ejemplo.com',
+    'usuario123@subdominio.ejemplo.com'
+  ];
+
+  const correosInvalidos = [
+    'usuarioejemplo.com',
+    'usuario@',
+    '@ejemplo.com',
+    'usuario@ejemplo',
+    'usuario@ejemplo..com',
+    'usuario@.com',
+    'usuario@.@lo',
+    'usuario@.com._co',
+    'usuario@ejemplo_com',
+    'usuario@ejemplo.com..co',
+    'para nada un email'
+    
+  ];
+
+  console.log('Probando correos válidos:');
+  correosValidos.forEach(correo => {
+    console.log(`${correo}: ${validarEmail(correo)}`);
+    assert(validarEmail(correo), `El correo ${correo} debería ser válido`);
+  });
+
+  console.log('\nProbando correos inválidos:');
+  correosInvalidos.forEach(correo => {
+    console.log(`${correo}: ${validarEmail(correo)}`);
+    assert(!validarEmail(correo), `El correo ${correo} debería ser inválido`);
+  });
+});
+
+
+
+Deno.test('pruebas de inyección SQL', async () => {
+  const casosDePrueba = [
+    "usuario@ejemplo.com' OR '1'='1",
+    "usuario@ejemplo.com'; DROP TABLE registros; --",
+    "usuario@ejemplo.com' UNION SELECT * FROM usuarios; --",
+    "usuario@ejemplo.com' AND 1=0 UNION ALL SELECT * FROM información_schema.tables; --",
+    "' OR '1'='1",
+    "admin@ejemplo.com' --",
+    "usuario@ejemplo.com'; INSERT INTO usuarios (nombre, contraseña) VALUES ('hacker', '123456'); --",
+    "usuario@ejemplo.com' OR 1=1; --",
+    "usuario@ejemplo.com' AND 1=1; --",
+    "usuario@ejemplo.com' WAITFOR DELAY '0:0:10'--",
+  ];
+
+  for (const emailMalicioso of casosDePrueba) {
+    const respuesta = await app.request('/resultados/email', {
+      method: 'POST',
+      body: emailMalicioso
+    });
+    
+    const resultado = await respuesta.json();
+    
+    console.log(`Prueba con: ${emailMalicioso}`);
+    console.log('Resultado de la consulta:', resultado);
+    
+    // Validamos que el resultado de la petición sea un error
+    assert(respuesta.status === 400, `El estado de la respuesta debería ser 400 para: ${emailMalicioso}`);
+    assert(resultado.error === "Email no válido", `El mensaje de error debería indicar que el email no es válido para: ${emailMalicioso}`);
+  }
+});
+
+
+
+
+
 
