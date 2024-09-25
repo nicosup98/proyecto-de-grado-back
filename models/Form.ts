@@ -11,7 +11,8 @@ export type Bloque =
     | "Feria de comida"
     | "Centro de mantenimiento"
     | "Vivero"
-    | "Biblioteca";
+    | "Biblioteca"
+    | "otro";
 
 
 type Persona =
@@ -53,10 +54,9 @@ export interface Consumo extends RecordType {
 }
 
 interface PuntoRojo {
-    nombre: string;
-    tipo: string;
-    litros?: number;
-    tiempo_uso: number;
+    name: string;
+    value: number;
+    option: string
 }
 
 export interface ConsumoCalculado {

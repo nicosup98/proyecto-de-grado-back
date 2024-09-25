@@ -12,10 +12,10 @@ export function calcular(
         litros_urinarios: consumo.urinario_litro_jalada *
             (data.cantidad_veces_urinario || 0),
         puntos_rojos: data.punto_rojo?.reduce((pv,cr) =>{
-            if(cr.tipo === 'otro') {
-                return pv + (cr.litros || 0)
+            if(cr.option === 'otro') {
+                return pv + (cr.value || 0)
             }
-            return pv + (consumo[cr.tipo] * cr.tiempo_uso)
+            return pv + (consumo[cr.name] * cr.value)
 
 
         },0) || //momentaneo para que no chille

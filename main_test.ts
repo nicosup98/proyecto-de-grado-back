@@ -62,15 +62,14 @@ Deno.test('test calculo con puntos rojos',()=>{
         tipo_persona:"mantenimiento",
         punto_rojo:[
             {
-                nombre:"test",
-                tiempo_uso: 4,
-                tipo:"manguera_litro_s"
+                name:"test",
+                value: 4,
+                option:"otro"
             },
             {
-                nombre:'test 2',
-                tipo: 'otro',
-                tiempo_uso: 3,
-                litros: 1
+                name:'test 2',
+                option: 'otro',
+                value: 1
             }
         ]
     }
@@ -121,15 +120,14 @@ Deno.test("insertar formulario con puntos rojos", async () => {
         tipo_persona: "mantenimiento",
         punto_rojo: [
             {
-                nombre: "Manguera jardín",
-                tiempo_uso: 10,
-                tipo: "manguera_litro_s"
+                name: "Manguera jardín",
+                value: 10,
+                option: 'otro'
             },
             {
-                nombre: "Limpieza especial",
-                tipo: "otro",
-                tiempo_uso: 5,
-                litros: 20
+                name: "Limpieza especial",
+                value: 20,
+                option: 'otro'
             }
         ]
     }
@@ -243,6 +241,32 @@ Deno.test('pruebas de inyección SQL', async () => {
     assert(resultado.error === "Email no válido", `El mensaje de error debería indicar que el email no es válido para: ${emailMalicioso}`);
   }
 });
+
+Deno.test('pruebas litros botellones',async ()=>{
+    const fakeForm3: Form = {
+        ...fakeForm,
+        tipo_persona: "mantenimiento",
+        punto_rojo: [
+            {
+                name: "botellon",
+                value: 2,
+                option: "botellon",
+            }
+        ]
+    }
+
+    const resp = await app.request('/send_form',{
+        method: 'POST',
+        body: JSON.stringify(fakeForm3)
+    })
+
+    const data = await resp.json()
+    console.log(data)
+    assert(resp.status === 200)
+    assert(data.consumo_total.mensual > 0)
+    assert(data.consumo_total.semanal > 0)
+    assert(data.consumo_detalles.puntos_rojos > 0)
+})
 
 
 
