@@ -12,7 +12,7 @@ export function calcular(
         litros_urinarios: consumo.urinario_litro_jalada *
             (data.cantidad_veces_urinario || 0),
         puntos_rojos: data.punto_rojo?.reduce((pv,cr) =>{
-            if(cr.option === 'otro') {
+            if(cr.option === 'Otro') {
                 return pv + (cr.value || 0)
             }
             return pv + (consumo[cr.name] * cr.value)
