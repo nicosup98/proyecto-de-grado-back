@@ -173,12 +173,13 @@ Deno.test('e2e resultados/email',async ()=> {
     console.log(data)
 })
 
-Deno.test('validación de correos electrónicos', () => {
+Deno.test('validación de correos electrónicos', async () => {
   const correosValidos = [
-    'usuario@ejemplo.com',
-    'usuario.nombre@dominio.co',
-    'usuario+etiqueta@ejemplo.com',
-    'usuario123@subdominio.ejemplo.com'
+    'nicosup13@gmail.com',
+    'nd.amico@urbe.edu.ve',
+    'd.morillo@urbe.edu.ve',
+    'crypto_nico98@protonmail.com'
+
   ];
 
   const correosInvalidos = [
@@ -192,21 +193,24 @@ Deno.test('validación de correos electrónicos', () => {
     'usuario@.com._co',
     'usuario@ejemplo_com',
     'usuario@ejemplo.com..co',
-    'para nada un email'
+    'para nada un email',
+    'pepe@test.com',
+    'usuario@ejez.com',
     
   ];
 
   console.log('Probando correos válidos:');
-  correosValidos.forEach(correo => {
-    console.log(`${correo}: ${validarEmail(correo)}`);
-    assert(validarEmail(correo), `El correo ${correo} debería ser válido`);
-  });
+  const testResult = await Promise.allSettled(correosValidos.map(correo => validarEmail(correo)));
+
+  testResult.forEach((result,i)=>{
+    assert(result.status === 'fulfilled' && result.value,`el correo ${i+1} deberia ser valido`)
+  })
 
   console.log('\nProbando correos inválidos:');
-  correosInvalidos.forEach(correo => {
-    console.log(`${correo}: ${validarEmail(correo)}`);
-    assert(!validarEmail(correo), `El correo ${correo} debería ser inválido`);
-  });
+  const testResultIvalid = await Promise.allSettled(correosInvalidos.map(correo => validarEmail(correo)))
+  testResultIvalid.forEach((result,i)=>{
+    assert(result.status === 'fulfilled' && !result.value,`el correo ${i+1} deberia ser invalido`)
+  })
 });
 
 

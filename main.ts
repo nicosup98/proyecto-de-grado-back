@@ -54,7 +54,7 @@ app.post("/resultados/email", async (c: Context) => {
   const email = await c.req.text()
   
   // Validación del email
-  if(!validarEmail(email)) {
+  if(!(await validarEmail(email))) {
     return c.json({error: "Email no válido"}, 400)
   }
 
