@@ -5,3 +5,4 @@ export function getEnvParam(key: string){
 }
 
 export const jwt_secret = getEnvParam("JWT_SECRET")
+export const isProd = getEnvParam('prod')

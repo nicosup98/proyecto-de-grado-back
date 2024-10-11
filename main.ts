@@ -2,7 +2,7 @@ import { type Context, Hono } from "@hono/hono";
 import { jwt,sign,verify as jwt_verify } from "@hono/hono/jwt"
 import type { JwtVariables } from "@hono/hono/jwt"
 import dayjs from "@dayjs"
-import { jwt_secret as secret} from "./utils/env.ts"
+import { isProd, jwt_secret as secret} from "./utils/env.ts"
 import { Form, type GoogleAuthData } from "./models/Form.ts";
 import { calcular } from "./services/calcularData.ts"
 import { connect } from "./db/Connection.ts"
@@ -90,7 +90,8 @@ app.get('/oauth/google/callback', async (c: Context)=> {
   })
   const data:GoogleAuthData = await resp.json()
   const encode = btoa(data.email)
-  return c.redirect(`http://localhost:5173?email=${encode}`) //cambiar cuando se despliegue
+  const front_url = isProd? 'https://proyecto-de-grado-fawn.vercel.app' : 'http://localhost:5173'
+  return c.redirect(`${front_url}?email=${encode}`) //cambiar cuando se despliegue
 })
 app.get('/oauth/google/login',async (c: Context)=> {
   const { signIn } = createHelpers(googleOauthConfig)
