@@ -84,7 +84,7 @@ app.get('/oauth/google/callback', async (c: Context)=> {
   const { handleCallback } = createHelpers(googleOauthConfig)
   const {tokens} = await handleCallback(c.req.raw)
   const resp = await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{
-    headers: {
+    headers: { 
       Authorization: `Bearer ${tokens.accessToken}`
     }
   })
