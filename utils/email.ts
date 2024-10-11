@@ -4,7 +4,7 @@ import { createGoogleOAuthConfig } from '@deno/kv-oauth'
 import { getEnvParam } from "./env.ts";
 
 export const googleOauthConfig = createGoogleOAuthConfig({
-    redirectUri: getEnvParam('prod') ? 'nicosup98-proyecto-de-86.deno.dev/google/callback' : 'http://localhost:4000/oauth/google/callback',
+    redirectUri: getEnvParam('prod') ? 'nicosup98-proyecto-de-86.deno.dev/oauth/google/callback' : 'http://localhost:4000/oauth/google/callback',
     scope: "https://www.googleapis.com/auth/userinfo.email"
 })
 
