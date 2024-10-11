@@ -4,7 +4,7 @@ import { createGoogleOAuthConfig } from '@deno/kv-oauth'
 import { redirect_uri } from "./env.ts";
 
 export const googleOauthConfig = createGoogleOAuthConfig({
-    redirectUri: redirect_uri,
+    redirectUri: `${redirect_uri}/oauth/google/callback`,
     scope: "https://www.googleapis.com/auth/userinfo.email"
 })
 
