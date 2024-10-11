@@ -1,129 +1,181 @@
 {
-  "version": "3",
-  "packages": {
-    "specifiers": {
-      "jsr:@hono/hono@^4.5.11": "jsr:@hono/hono@4.5.11",
-      "jsr:@std/assert@1": "jsr:@std/assert@1.0.4",
-      "jsr:@std/dotenv@^0.225.2": "jsr:@std/dotenv@0.225.2",
-      "jsr:@std/internal@^1.0.3": "jsr:@std/internal@1.0.3",
-      "jsr:@ts-rex/bcrypt@^1.0.3": "jsr:@ts-rex/bcrypt@1.0.3",
-      "npm:@devmehq/email-validator-js": "npm:@devmehq/email-validator-js@1.0.19",
-      "npm:convert": "npm:convert@5.4.0",
-      "npm:dayjs@1.11.13": "npm:dayjs@1.11.13",
-      "npm:mysql2": "npm:mysql2@3.11.2"
+  "version": "4",
+  "specifiers": {
+    "jsr:@deno/kv-oauth@0.11": "0.11.0",
+    "jsr:@hono/hono@^4.5.11": "4.5.11",
+    "jsr:@std/assert@0.221": "0.221.0",
+    "jsr:@std/assert@1": "1.0.4",
+    "jsr:@std/async@0.221": "0.221.0",
+    "jsr:@std/cli@0.221": "0.221.0",
+    "jsr:@std/datetime@0.221": "0.221.0",
+    "jsr:@std/dotenv@~0.225.2": "0.225.2",
+    "jsr:@std/encoding@0.221": "0.221.0",
+    "jsr:@std/fmt@0.221": "0.221.0",
+    "jsr:@std/http@0.221": "0.221.0",
+    "jsr:@std/internal@^1.0.3": "1.0.3",
+    "jsr:@std/media-types@0.221": "0.221.0",
+    "jsr:@std/path@0.221": "0.221.0",
+    "jsr:@std/streams@0.221": "0.221.0",
+    "jsr:@ts-rex/bcrypt@^1.0.3": "1.0.3",
+    "npm:@devmehq/email-validator-js@*": "1.0.19",
+    "npm:convert@*": "5.4.0",
+    "npm:dayjs@1.11.13": "1.11.13",
+    "npm:mysql2@*": "3.11.2"
+  },
+  "jsr": {
+    "@deno/kv-oauth@0.11.0": {
+      "integrity": "17a8822fde1573563b8bdb526d925e398a4b92394381273bad1e837fb4a6c8b2",
+      "dependencies": [
+        "jsr:@std/datetime",
+        "jsr:@std/http"
+      ]
     },
-    "jsr": {
-      "@hono/hono@4.5.11": {
-        "integrity": "5bd6b1a3a503efb746fdcf0aae3ac536dd09229d372988bde5db0798ef64ae4f"
-      },
-      "@std/assert@1.0.4": {
-        "integrity": "d4c767ea578e5bc09c15b6e503376003e5b2d1f4c0cdf08524a92101ff4d7b96",
-        "dependencies": [
-          "jsr:@std/internal@^1.0.3"
-        ]
-      },
-      "@std/dotenv@0.225.2": {
-        "integrity": "e2025dce4de6c7bca21dece8baddd4262b09d5187217e231b033e088e0c4dd23"
-      },
-      "@std/internal@1.0.3": {
-        "integrity": "208e9b94a3d5649bd880e9ca38b885ab7651ab5b5303a56ed25de4755fb7b11e"
-      },
-      "@ts-rex/bcrypt@1.0.3": {
-        "integrity": "1a172769df1a357032e78cc13205dc34cc13f2307a2b81458bf988904ec8db02"
-      }
+    "@hono/hono@4.5.11": {
+      "integrity": "5bd6b1a3a503efb746fdcf0aae3ac536dd09229d372988bde5db0798ef64ae4f"
     },
-    "npm": {
-      "@devmehq/email-validator-js@1.0.19": {
-        "integrity": "sha512-Z2qlnD2xddvXz+5e26czIvPJysUfvVi+9mjyNG/XH7eZbqF93hoU/Ff4KfGv9UoPmj7uhRW1k+i9JFtae7sc3w==",
-        "dependencies": {
-          "@types/psl": "@types/psl@1.1.3",
-          "psl": "psl@1.9.0"
-        }
-      },
-      "@types/psl@1.1.3": {
-        "integrity": "sha512-Iu174JHfLd7i/XkXY6VDrqSlPvTDQOtQI7wNAXKKOAADJ9TduRLkNdMgjGiMxSttUIZnomv81JAbAbC0DhggxA==",
-        "dependencies": {}
-      },
-      "aws-ssl-profiles@1.1.2": {
-        "integrity": "sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g==",
-        "dependencies": {}
-      },
-      "convert@5.4.0": {
-        "integrity": "sha512-a0fKxR/9dxSDlkuHAwj/CI8cuSU9BGNVYb5flO2tvlUyw5arn/AIfOGHBTXR9QnOVHsvC8NJ5/kI4mrmh5XjVg==",
-        "dependencies": {}
-      },
-      "dayjs@1.11.13": {
-        "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==",
-        "dependencies": {}
-      },
-      "denque@2.1.0": {
-        "integrity": "sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==",
-        "dependencies": {}
-      },
-      "generate-function@2.3.1": {
-        "integrity": "sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==",
-        "dependencies": {
-          "is-property": "is-property@1.0.2"
-        }
-      },
-      "iconv-lite@0.6.3": {
-        "integrity": "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==",
-        "dependencies": {
-          "safer-buffer": "safer-buffer@2.1.2"
-        }
-      },
-      "is-property@1.0.2": {
-        "integrity": "sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g==",
-        "dependencies": {}
-      },
-      "long@5.2.3": {
-        "integrity": "sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==",
-        "dependencies": {}
-      },
-      "lru-cache@7.18.3": {
-        "integrity": "sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==",
-        "dependencies": {}
-      },
-      "lru.min@1.1.0": {
-        "integrity": "sha512-86xXMB6DiuKrTqkE/lRL0drlNh568awttBPJ7D66fzDHpy6NC5r3N+Ly/lKCS2zjmeGyvFDx670z0cD0PVBwGA==",
-        "dependencies": {}
-      },
-      "mysql2@3.11.2": {
-        "integrity": "sha512-3jhjAk4NHs3rcKjOiFTqmU76kdib/KDOC+lshrYa76QWkcfF1GbYGK4d5PqPljVmIAc0ChozCRmeYIlNp5bz5w==",
-        "dependencies": {
-          "aws-ssl-profiles": "aws-ssl-profiles@1.1.2",
-          "denque": "denque@2.1.0",
-          "generate-function": "generate-function@2.3.1",
-          "iconv-lite": "iconv-lite@0.6.3",
-          "long": "long@5.2.3",
-          "lru.min": "lru.min@1.1.0",
-          "named-placeholders": "named-placeholders@1.1.3",
-          "seq-queue": "seq-queue@0.0.5",
-          "sqlstring": "sqlstring@2.3.3"
-        }
-      },
-      "named-placeholders@1.1.3": {
-        "integrity": "sha512-eLoBxg6wE/rZkJPhU/xRX1WTpkFEwDJEN96oxFrTsqBdbT5ec295Q+CoHrL9IT0DipqKhmGcaZmwOt8OON5x1w==",
-        "dependencies": {
-          "lru-cache": "lru-cache@7.18.3"
-        }
-      },
-      "psl@1.9.0": {
-        "integrity": "sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==",
-        "dependencies": {}
-      },
-      "safer-buffer@2.1.2": {
-        "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
-        "dependencies": {}
-      },
-      "seq-queue@0.0.5": {
-        "integrity": "sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q==",
-        "dependencies": {}
-      },
-      "sqlstring@2.3.3": {
-        "integrity": "sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==",
-        "dependencies": {}
-      }
+    "@std/assert@0.221.0": {
+      "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
+    },
+    "@std/assert@1.0.4": {
+      "integrity": "d4c767ea578e5bc09c15b6e503376003e5b2d1f4c0cdf08524a92101ff4d7b96",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/async@0.221.0": {
+      "integrity": "f5519861754a1bb2898d227dd8ccb545abc975534aa9063e53911d6cb4e365cf"
+    },
+    "@std/cli@0.221.0": {
+      "integrity": "157c2f881f0f85a73d994e7668754aeeccdf597680bd9c65de9c6bcd670416ac",
+      "dependencies": [
+        "jsr:@std/assert@0.221"
+      ]
+    },
+    "@std/datetime@0.221.0": {
+      "integrity": "41188de53bd811a0f04955b1cec0ce65f9b8fec293529818c829a55dfcce5031"
+    },
+    "@std/dotenv@0.225.2": {
+      "integrity": "e2025dce4de6c7bca21dece8baddd4262b09d5187217e231b033e088e0c4dd23"
+    },
+    "@std/encoding@0.221.0": {
+      "integrity": "d1dd76ef0dc5d14088411e6dc1dede53bf8308c95d1537df1214c97137208e45"
+    },
+    "@std/fmt@0.221.0": {
+      "integrity": "379fed69bdd9731110f26b9085aeb740606b20428ce6af31ef6bd45ef8efa62a"
+    },
+    "@std/http@0.221.0": {
+      "integrity": "35fdcfed1501f2052338bf7ffba5d66f1455f2fffc01e9d7cf13eed548fffbaa",
+      "dependencies": [
+        "jsr:@std/assert@0.221",
+        "jsr:@std/async",
+        "jsr:@std/cli",
+        "jsr:@std/encoding",
+        "jsr:@std/fmt",
+        "jsr:@std/media-types",
+        "jsr:@std/path",
+        "jsr:@std/streams"
+      ]
+    },
+    "@std/internal@1.0.3": {
+      "integrity": "208e9b94a3d5649bd880e9ca38b885ab7651ab5b5303a56ed25de4755fb7b11e"
+    },
+    "@std/media-types@0.221.0": {
+      "integrity": "572addcbda2a21367c1f8eaa8c72fea6654b50779027dbde9f693aaa4bac30c3"
+    },
+    "@std/path@0.221.0": {
+      "integrity": "0a36f6b17314ef653a3a1649740cc8db51b25a133ecfe838f20b79a56ebe0095",
+      "dependencies": [
+        "jsr:@std/assert@0.221"
+      ]
+    },
+    "@std/streams@0.221.0": {
+      "integrity": "47f2f74634b47449277c0ee79fe878da4424b66bd8975c032e3afdca88986e61",
+      "dependencies": [
+        "jsr:@std/assert@0.221"
+      ]
+    },
+    "@ts-rex/bcrypt@1.0.3": {
+      "integrity": "1a172769df1a357032e78cc13205dc34cc13f2307a2b81458bf988904ec8db02"
+    }
+  },
+  "npm": {
+    "@devmehq/email-validator-js@1.0.19": {
+      "integrity": "sha512-Z2qlnD2xddvXz+5e26czIvPJysUfvVi+9mjyNG/XH7eZbqF93hoU/Ff4KfGv9UoPmj7uhRW1k+i9JFtae7sc3w==",
+      "dependencies": [
+        "@types/psl",
+        "psl"
+      ]
+    },
+    "@types/psl@1.1.3": {
+      "integrity": "sha512-Iu174JHfLd7i/XkXY6VDrqSlPvTDQOtQI7wNAXKKOAADJ9TduRLkNdMgjGiMxSttUIZnomv81JAbAbC0DhggxA=="
+    },
+    "aws-ssl-profiles@1.1.2": {
+      "integrity": "sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g=="
+    },
+    "convert@5.4.0": {
+      "integrity": "sha512-a0fKxR/9dxSDlkuHAwj/CI8cuSU9BGNVYb5flO2tvlUyw5arn/AIfOGHBTXR9QnOVHsvC8NJ5/kI4mrmh5XjVg=="
+    },
+    "dayjs@1.11.13": {
+      "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg=="
+    },
+    "denque@2.1.0": {
+      "integrity": "sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw=="
+    },
+    "generate-function@2.3.1": {
+      "integrity": "sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==",
+      "dependencies": [
+        "is-property"
+      ]
+    },
+    "iconv-lite@0.6.3": {
+      "integrity": "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==",
+      "dependencies": [
+        "safer-buffer"
+      ]
+    },
+    "is-property@1.0.2": {
+      "integrity": "sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g=="
+    },
+    "long@5.2.3": {
+      "integrity": "sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q=="
+    },
+    "lru-cache@7.18.3": {
+      "integrity": "sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA=="
+    },
+    "lru.min@1.1.0": {
+      "integrity": "sha512-86xXMB6DiuKrTqkE/lRL0drlNh568awttBPJ7D66fzDHpy6NC5r3N+Ly/lKCS2zjmeGyvFDx670z0cD0PVBwGA=="
+    },
+    "mysql2@3.11.2": {
+      "integrity": "sha512-3jhjAk4NHs3rcKjOiFTqmU76kdib/KDOC+lshrYa76QWkcfF1GbYGK4d5PqPljVmIAc0ChozCRmeYIlNp5bz5w==",
+      "dependencies": [
+        "aws-ssl-profiles",
+        "denque",
+        "generate-function",
+        "iconv-lite",
+        "long",
+        "lru.min",
+        "named-placeholders",
+        "seq-queue",
+        "sqlstring"
+      ]
+    },
+    "named-placeholders@1.1.3": {
+      "integrity": "sha512-eLoBxg6wE/rZkJPhU/xRX1WTpkFEwDJEN96oxFrTsqBdbT5ec295Q+CoHrL9IT0DipqKhmGcaZmwOt8OON5x1w==",
+      "dependencies": [
+        "lru-cache"
+      ]
+    },
+    "psl@1.9.0": {
+      "integrity": "sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag=="
+    },
+    "safer-buffer@2.1.2": {
+      "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
+    },
+    "seq-queue@0.0.5": {
+      "integrity": "sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q=="
+    },
+    "sqlstring@2.3.3": {
+      "integrity": "sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg=="
     }
   },
   "redirects": {
@@ -196,12 +248,13 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@deno/kv-oauth@0.11",
       "jsr:@hono/hono@^4.5.11",
       "jsr:@std/assert@1",
-      "jsr:@std/dotenv@^0.225.2",
+      "jsr:@std/dotenv@~0.225.2",
       "jsr:@ts-rex/bcrypt@^1.0.3",
-      "npm:@devmehq/email-validator-js",
-      "npm:convert",
+      "npm:@devmehq/email-validator-js@*",
+      "npm:convert@*",
       "npm:dayjs@1.11.13"
     ]
   }

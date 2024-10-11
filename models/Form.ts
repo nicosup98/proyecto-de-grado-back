@@ -78,3 +78,10 @@ export interface ConsumoDetalles {
     litros_urinarios: number;
     puntos_rojos: number;
 }
+
+export interface GoogleAuthData {
+    sub: string,
+    picture: string
+    email: string,
+    email_verified: string
+}
