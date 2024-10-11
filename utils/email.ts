@@ -1,10 +1,10 @@
 import { verifyEmail } from '@devmehq/email-validator-js'
 
 import { createGoogleOAuthConfig } from '@deno/kv-oauth'
-import { getEnvParam } from "./env.ts";
+import { redirect_uri } from "./env.ts";
 
 export const googleOauthConfig = createGoogleOAuthConfig({
-    redirectUri: getEnvParam('prod') ? 'https://nicosup98-proyecto-de-86.deno.dev/oauth/google/callback' : 'http://localhost:4000/oauth/google/callback',
+    redirectUri: redirect_uri,
     scope: "https://www.googleapis.com/auth/userinfo.email"
 })
 

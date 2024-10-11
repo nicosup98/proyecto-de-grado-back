@@ -2,7 +2,7 @@ import { type Context, Hono } from "@hono/hono";
 import { jwt,sign,verify as jwt_verify } from "@hono/hono/jwt"
 import type { JwtVariables } from "@hono/hono/jwt"
 import dayjs from "@dayjs"
-import { isProd, jwt_secret as secret} from "./utils/env.ts"
+import { front_url, jwt_secret as secret} from "./utils/env.ts"
 import { Form, type GoogleAuthData } from "./models/Form.ts";
 import { calcular } from "./services/calcularData.ts"
 import { connect } from "./db/Connection.ts"
@@ -76,7 +76,7 @@ app.get("/reset_formulario",async c=> {
     await jwt_verify(token,secret)
   } catch(e) {
     console.error(e)
-    return c.text("ocurrio un error al verificar el jwt",500)
+    return c.text("ocurrio un error al verificar el token",500)
   }
   
 })
@@ -90,8 +90,8 @@ app.get('/oauth/google/callback', async (c: Context)=> {
   })
   const data:GoogleAuthData = await resp.json()
   const encode = btoa(data.email)
-  const front_url = isProd? 'https://proyecto-de-grado-fawn.vercel.app' : 'http://localhost:5173'
-  return c.redirect(`${front_url}?email=${encode}`) //cambiar cuando se despliegue
+  
+  return c.redirect(`${front_url}?email=${encode}`) 
 })
 app.get('/oauth/google/login',async (c: Context)=> {
   const { signIn } = createHelpers(googleOauthConfig)
