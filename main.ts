@@ -91,7 +91,7 @@ app.get('/oauth/google/callback', async (c: Context)=> {
   const data:GoogleAuthData = await resp.json()
   const encode = btoa(data.email)
   
-  return c.redirect(`${front_url}?email=${encode}`) 
+  return c.redirect(`${front_url}/?email=${encode}`) 
 })
 app.get('/oauth/google/login',async (c: Context)=> {
   const { signIn } = createHelpers(googleOauthConfig)
