@@ -6,14 +6,16 @@ import { front_url, jwt_secret as secret} from "./utils/env.ts"
 import { Form, type GoogleAuthData } from "./models/Form.ts";
 import { calcular } from "./services/calcularData.ts"
 import { connect } from "./db/Connection.ts"
-import { getRegistroByEmail, insertRegistro } from "./db/Registro.ts"
-import { hash } from "@ts-rex/bcrypt"
+import { getRegistroByEmail, getTotalRegistros, getTotalRegistrosByBloque, getTotalRegistrosByTipo, insertRegistro } from "./db/Registro.ts"
+import { verify } from "@ts-rex/bcrypt"
 import { getUserByCredentials } from "./db/Admin.ts"
 import { getConsumo } from "./db/Consumo.ts";
-import { Registro } from "./models/Registro.ts";
+import { Registro, RegistroByBloque, RegistroByTipo } from "./models/Registro.ts";
 import { cors } from '@hono/hono/cors'
 import { validarEmail,googleOauthConfig } from "./utils/email.ts";
 import { createHelpers } from '@deno/kv-oauth'
+import { calculateDashboardInfo } from "./services/dashboardData.ts";
+import { parseDate } from "./utils/date.ts";
 const app = new Hono<{Variables: JwtVariables}>();
 
 app.use('/*',cors({origin: '*'}))
@@ -103,16 +105,16 @@ app.get('/oauth/google/login',async (c: Context)=> {
 
 
 app.post("/login/admin",async (c: Context)=> {
-  const admin: {username: string, password: string} = await c.req.json()
+  const admin: {email: string, password: string} = await c.req.json()
   const client = await connect()
-  admin.password = hash(admin.password)
+
   
   const [adm_user] = await getUserByCredentials(admin,client)
+  
   await client.close()
-  if(!adm_user) {
-    return c.text("fallo algo",500)
+  if(!verify(admin.password,adm_user.password)) {
+    return c.text("fallo al encontrar el usuario",500)
   }
-
 
   return c.text(await sign({...admin, password:"", timeout: dayjs().add(30,"minute").format() },secret))
 
@@ -120,14 +122,41 @@ app.post("/login/admin",async (c: Context)=> {
 
 app.get("/admin/dashboard", async (c)=>{
   const payload = c.get("jwtPayload")
-  
+  const client = await connect()
   //verificar con una funcion el timeout y redireccionar al login http 403
   if(dayjs().isAfter(dayjs(payload.timeout))){
     return c.text("sesion expirada",403)
   }
   const _refreshToken = await sign({...payload,password:"", timeout: dayjs().add(30,"minute").format()},secret) // pasar al front
   //consultar en bd la data
-  return c.text("dashboard")
+  const registros = await getTotalRegistros(client)
+  const registros_persona:RegistroByTipo = {
+    estudiante: await getTotalRegistrosByTipo(client,"estudiante"),
+    mantenimiento: await getTotalRegistrosByTipo(client,"mantenimiento"),
+    personal: await getTotalRegistrosByTipo(client,"personal"),
+    profesor: await getTotalRegistrosByTipo(client,"profesor"),
+    visitante: await getTotalRegistrosByTipo(client,"visitante")
+  }
+  const registros_bloque: RegistroByBloque = {
+    "Centro de mantenimiento": await getTotalRegistrosByBloque(client,"Centro de mantenimiento"),
+    A: await getTotalRegistrosByBloque(client,"A"),
+    B: await getTotalRegistrosByBloque(client,"B"),
+    C: await getTotalRegistrosByBloque(client,"C"),
+    D: await getTotalRegistrosByBloque(client,"D"),
+    E: await getTotalRegistrosByBloque(client,"E"),
+    F: await getTotalRegistrosByBloque(client,"F"),
+    G: await getTotalRegistrosByBloque(client,"G"),
+    "Feria de comida": await getTotalRegistrosByBloque(client,"Feria de comida"),
+    Biblioteca: await getTotalRegistrosByBloque(client,"Biblioteca"),
+    cancha: await getTotalRegistrosByBloque(client,"cancha"),
+    otro: await getTotalRegistrosByBloque(client,"otro"),
+    rectorado: await getTotalRegistrosByBloque(client,"rectorado"),
+    Vivero: await getTotalRegistrosByBloque(client,"Vivero")
+  }
+  client.close()
+
+  const data = calculateDashboardInfo(registros,registros_bloque,registros_persona)
+  return c.json({data,_refreshToken})
 })
 
 export {

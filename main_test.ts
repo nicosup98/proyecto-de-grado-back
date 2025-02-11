@@ -272,6 +272,32 @@ Deno.test('pruebas litros botellones',async ()=>{
     assert(data.consumo_detalles.puntos_rojos > 0)
 })
 
+Deno.test('pruebas login y dashboard',async ()=> {
+    const resp = await app.request('/login/admin', {
+        method: 'POST',
+        body: JSON.stringify({email: 'damiconicola98@gmail.com',password: 'huella_hidrica2025'})
+    })
+
+
+    const data = await resp.text()
+    console.log({data})
+
+    assert(resp.ok)
+
+
+    const resp2 = await app.request('/admin/dashboard', {
+        headers: {
+            Authorization: `Bearer ${data}`
+        }     
+    })
+
+    const dashboard = await resp2.text()
+
+    console.log(dashboard)
+    
+    assert(resp2.ok)
+})
+
 
 
 

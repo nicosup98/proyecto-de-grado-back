@@ -15,7 +15,7 @@ export type Bloque =
     | "otro";
 
 
-type Persona =
+export type Persona =
     | "estudiante"
     | "profesor"
     | "personal"
