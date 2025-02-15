@@ -43,7 +43,7 @@ export function getTotalRegistrosByBloque(
   client: Client,
   bloque: Bloque,
 ) {
-  console.log(`select * from Registro bloque_preferido='${bloque}'`)
+  
   return client.query(
     `select * from Registro where bloque_preferido='${bloque}'`,
   );

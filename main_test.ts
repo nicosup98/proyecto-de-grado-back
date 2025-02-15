@@ -8,6 +8,7 @@ import { connect } from "./db/Connection.ts";
 import { Registro } from "./models/Registro.ts";
 import { getRegistroById } from "./db/Registro.ts";
 import { validarEmail } from "./utils/email.ts";
+import { GastoReal, GastoRealPojo } from "./models/GastoReal.ts";
 
 
 const fakeForm: Form = {
@@ -298,6 +299,36 @@ Deno.test('pruebas login y dashboard',async ()=> {
     assert(resp2.ok)
 })
 
+
+Deno.test('prueba insertar gasto real',async ()=> {
+    const resp = await app.request('/login/admin', {
+        method: 'POST',
+        body: JSON.stringify({email: 'damiconicola98@gmail.com',password: 'huella_hidrica2025'})
+    })
+
+
+    const data = await resp.text()
+    console.log({data})
+
+    assert(resp.ok)
+    const body: GastoRealPojo = {
+        agua_comprada:10,
+        agua_gastada:5,
+        agua_recolectada:11
+    }
+
+    const resp2 = await app.request('/admin/gastoReal',
+        {
+            method:'POST',
+            body: JSON.stringify(body),
+            headers: {
+                Authorization: `Bearer ${data}`
+            }
+        }
+    )
+
+    assert(resp2.ok)
+})
 
 
 
