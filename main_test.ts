@@ -314,7 +314,8 @@ Deno.test('prueba insertar gasto real',async ()=> {
     const body: GastoRealPojo = {
         agua_comprada:10,
         agua_gastada:5,
-        agua_recolectada:11
+        agua_recolectada:11,
+        fecha: dayjs().format()
     }
 
     const resp2 = await app.request('/admin/gastoReal',

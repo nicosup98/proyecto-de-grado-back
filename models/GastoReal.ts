@@ -7,4 +7,4 @@ export interface GastoReal {
   fecha: string
 }
 
-export type GastoRealPojo = Omit<GastoReal,'agua_suministrada' | 'fecha'>
+export type GastoRealPojo = Omit<GastoReal,'agua_suministrada'>

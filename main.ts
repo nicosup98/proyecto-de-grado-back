@@ -30,6 +30,7 @@ import { parseDate } from "./utils/date.ts";
 import { GastoReal, GastoRealPojo } from "./models/GastoReal.ts";
 import {
   getGastoReal,
+  getGastoRealByMonths,
   insertGastoReal,
   updateGastoReal,
 } from "./db/GastoReal.ts";
@@ -216,13 +217,13 @@ app.get("/admin/dashboard", async (c) => {
 app.post("/admin/gastoReal", async (c) => {
   const client = await connect();
   const body: GastoRealPojo = await c.req.json();
-
+  console.log({body})
   const gasto_real: GastoReal = {
     ...body,
     agua_suministrada: body.agua_comprada + body.agua_recolectada,
-    fecha: dayjs().format(),
+    fecha: dayjs(body.fecha).format(),
   };
-
+  //ajustar en db para que sea un campo compuesto
   await insertGastoReal(client, gasto_real);
 
   client.close();
@@ -267,6 +268,22 @@ app.put("admin/gastoReal", async (c) => {
 
   return c.text("registro actualizado satisfactoriamente");
 });
+
+app.get('admin/gastoReal/year',async c => {
+  const payload = c.get("jwtPayload");
+
+  const client = await connect()
+  
+  const data = await getGastoRealByMonths(client)
+  const _refreshToken = await sign({
+    ...payload,
+    password: "",
+    timeout: dayjs().add(30, "minute").format(),
+  }, secret);
+  client.close()
+return c.json({data,_refreshToken})
+
+})
 
 export { app };
 
