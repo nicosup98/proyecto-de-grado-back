@@ -14,12 +14,12 @@
     "jsr:@std/http@0.221": "0.221.0",
     "jsr:@std/internal@^1.0.3": "1.0.3",
     "jsr:@std/media-types@0.221": "0.221.0",
+    "jsr:@std/path@*": "0.221.0",
     "jsr:@std/path@0.221": "0.221.0",
     "jsr:@std/streams@0.221": "0.221.0",
     "jsr:@ts-rex/bcrypt@^1.0.3": "1.0.3",
     "npm:@devmehq/email-validator-js@*": "1.0.19",
     "npm:convert@*": "5.4.0",
-    "npm:dayjs@1.11.13": "1.11.13",
     "npm:mysql2@*": "3.11.2"
   },
   "jsr": {
@@ -72,7 +72,7 @@
         "jsr:@std/encoding",
         "jsr:@std/fmt",
         "jsr:@std/media-types",
-        "jsr:@std/path",
+        "jsr:@std/path@0.221",
         "jsr:@std/streams"
       ]
     },
@@ -114,9 +114,6 @@
     },
     "convert@5.4.0": {
       "integrity": "sha512-a0fKxR/9dxSDlkuHAwj/CI8cuSU9BGNVYb5flO2tvlUyw5arn/AIfOGHBTXR9QnOVHsvC8NJ5/kI4mrmh5XjVg=="
-    },
-    "dayjs@1.11.13": {
-      "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg=="
     },
     "denque@2.1.0": {
       "integrity": "sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw=="
@@ -179,12 +176,27 @@
     }
   },
   "redirects": {
+    "https://cdn.skypack.dev/-/@pdf-lib/standard-fonts@v1.0.0-Z8Dxw2SAoP39vRoTIKF1/dist=es2019,mode=types/index.d.ts": "https://cdn.skypack.dev/-/@pdf-lib/standard-fonts@v1.0.0-Z8Dxw2SAoP39vRoTIKF1/dist=es2019,mode=types/lib/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/api/form.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/api/form/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/api/image.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/api/image/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/api/text.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/api/text/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/core.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/core/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/core/acroform.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/core/acroform/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/core/annotation.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/core/annotation/index.d.ts",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/utils.d.ts": "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=types/cjs/utils/index.d.ts",
     "https://cdn.skypack.dev/convert@5": "https://cdn.skypack.dev/new/convert@v5.4.0/dist=es2019",
     "https://cdn.skypack.dev/new/convert@v5.4.0/dist=es2019": "https://cdn.skypack.dev/-/convert@v5.4.0-V9pabCedCtiedoc22cQ2/dist=es2019,mode=imports/optimized/convert.js",
-    "https://deno.land/x/mysql/mod.ts": "https://deno.land/x/mysql@v2.12.1/mod.ts"
+    "https://deno.land/x/mysql/mod.ts": "https://deno.land/x/mysql@v2.12.1/mod.ts",
+    "https://esm.sh/dayjs/plugin/timezone": "https://esm.sh/dayjs@1.11.13/plugin/timezone"
   },
   "remote": {
+    "https://cdn.skypack.dev/-/@pdf-lib/standard-fonts@v1.0.0-Z8Dxw2SAoP39vRoTIKF1/dist=es2019,mode=imports/optimized/@pdf-lib/standard-fonts.js": "7e7233fe50eff7cdacd5dfe148b2e8793ef2c0aacd1b09d09d74fa71ea588eac",
+    "https://cdn.skypack.dev/-/@pdf-lib/upng@v1.0.1-cDyYONcMEAs6JipZyc8F/dist=es2019,mode=imports/optimized/@pdf-lib/upng.js": "c1fa7f102bc8ece5a18e22f27a18929143c4bba9735b24ea23b0b0d8eaa8cd53",
     "https://cdn.skypack.dev/-/convert@v5.4.0-V9pabCedCtiedoc22cQ2/dist=es2019,mode=imports/optimized/convert.js": "12b578b27b34274161c9563b71a9d3de36f28be3299bc3ceab58e409f33c66c0",
+    "https://cdn.skypack.dev/-/pako@v1.0.11-HN3j6r6YXxSYMQQ5YY76/dist=es2019,mode=imports/optimized/pako.js": "cb928ba393bdb8c8b9b6509a68975a00e43780ed2424bf0c6e020890dc546e4b",
+    "https://cdn.skypack.dev/-/pdf-lib@v1.17.1-P8YmSI9gov9vMnrV7v2f/dist=es2019,mode=imports/optimized/pdf-lib.js": "ce55a997148b41a520719255d57af560fd269685241031d2502f0c7583d690b2",
+    "https://cdn.skypack.dev/-/tslib@v1.14.1-mWTe8wftGbG1xYC8gPyw/dist=es2019,mode=imports/optimized/tslib.js": "bde9e42ab1dee8764c8fef53a8165ab516af507bd5a6e120aae6d0922925ba74",
+    "https://cdn.skypack.dev/pdf-lib@^1.17.1?dts": "11ccb0b2660b159faec9facfc77e47ad78e1d1ee41805f007b4dd11b62095e05",
     "https://deno.land/std@0.104.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
     "https://deno.land/std@0.104.0/async/deadline.ts": "1d6ac7aeaee22f75eb86e4e105d6161118aad7b41ae2dd14f4cfd3bf97472b93",
     "https://deno.land/std@0.104.0/async/debounce.ts": "b2f693e4baa16b62793fd618de6c003b63228db50ecfe3bd51fc5f6dc0bc264b",
@@ -244,7 +256,15 @@
     "https://deno.land/x/mysql@v2.12.1/src/packets/parsers/result.ts": "8ab16f1adae67415eefcc17803b0eb828c1f4c6a24c55f25949f418e862d3ec8",
     "https://deno.land/x/mysql@v2.12.1/src/pool.ts": "978ba2813b3886d68be007678360ad43c54dab14b1aea1c07fcdb41222fcc432",
     "https://deno.land/x/mysql@v2.12.1/src/util.ts": "83d38e87cc3901da00ac44bfcd53c0e8d24525262f5c7647c912dccf3ed2dbb5",
-    "https://deno.land/x/sql_builder@v1.9.1/util.ts": "b9855dc435972704cf82655019f4ec168ac83550ab4db596c5f6b6d201466384"
+    "https://deno.land/x/sql_builder@v1.9.1/util.ts": "b9855dc435972704cf82655019f4ec168ac83550ab4db596c5f6b6d201466384",
+    "https://esm.sh/dayjs@1.11.13": "89c34b8b3f7b970708114b4d264c9430c30eb0c2eab1419410c77ffefa18fe2c",
+    "https://esm.sh/dayjs@1.11.13/denonext/dayjs.mjs": "a6d8258bec464149ab2c9ae26e4bd3736897828586b03f8fea45403080bf8a80",
+    "https://esm.sh/dayjs@1.11.13/denonext/plugin/timezone.mjs": "94d48607684cc8423f815fee4e72bf334c801cdf52d79caa00481a7e83c345f4",
+    "https://esm.sh/dayjs@1.11.13/denonext/plugin/utc.mjs": "7e89223a0933377aaa5fd52d97f116ed3d48c93d5b2ed305d86bde9e496b3e12",
+    "https://esm.sh/dayjs@1.11.13/plugin/timezone": "cfe2b0eec9855373de8fbc92d3503d25930ab3156522482e55f7a66bb3d4fb32",
+    "https://esm.sh/dayjs@1.11.13/plugin/utc": "2e41a0673e6e7c7c962983f1680911ef6feb27ded6007bc7705787ac1b2637b7",
+    "https://esm.sh/dayjs@1.11.5/denonext/plugin/timezone.mjs": "e56b1b050628e121bdbabf9ac05565cf148f83c016bc6b75da7e4793dce131c7",
+    "https://esm.sh/dayjs@1.11.5/plugin/timezone": "9b2485f3e16d63af08f1371233695e257ee04fcda5eef955ec689bbe5b002228"
   },
   "workspace": {
     "dependencies": [
@@ -252,10 +272,10 @@
       "jsr:@hono/hono@^4.5.11",
       "jsr:@std/assert@1",
       "jsr:@std/dotenv@~0.225.2",
+      "jsr:@std/path@*",
       "jsr:@ts-rex/bcrypt@^1.0.3",
       "npm:@devmehq/email-validator-js@*",
-      "npm:convert@*",
-      "npm:dayjs@1.11.13"
+      "npm:convert@*"
     ]
   }
 }

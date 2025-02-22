@@ -2,6 +2,10 @@ import { type Context, Hono } from "@hono/hono";
 import { jwt, sign, verify as jwt_verify } from "@hono/hono/jwt";
 import type { JwtVariables } from "@hono/hono/jwt";
 import dayjs from "@dayjs";
+import Timezone from "https://esm.sh/dayjs@1.11.13/plugin/timezone";
+import utc from "https://esm.sh/dayjs@1.11.13/plugin/utc";
+
+
 
 import { front_url, jwt_secret as secret } from "./utils/env.ts";
 import { Form, type GoogleAuthData } from "./models/Form.ts";
@@ -26,7 +30,6 @@ import { cors } from "@hono/hono/cors";
 import { googleOauthConfig, validarEmail } from "./utils/email.ts";
 import { createHelpers } from "@deno/kv-oauth";
 import { calculateDashboardInfo } from "./services/dashboardData.ts";
-import { parseDate } from "./utils/date.ts";
 import { GastoReal, GastoRealPojo } from "./models/GastoReal.ts";
 import {
   getGastoReal,
@@ -34,8 +37,10 @@ import {
   insertGastoReal,
   updateGastoReal,
 } from "./db/GastoReal.ts";
+import { PDFDocument, PageSizes, StandardFonts, rgb } from "https://cdn.skypack.dev/pdf-lib@^1.17.1?dts";
 const app = new Hono<{ Variables: JwtVariables }>();
-
+dayjs.extend(utc)
+dayjs.extend(Timezone)
 app.use("/*", cors({ origin: "*" }));
 app.use("/admin/*", (c, next) => {
   const jwtMiddleware = jwt({
@@ -43,6 +48,8 @@ app.use("/admin/*", (c, next) => {
   });
   return jwtMiddleware(c, next);
 });
+
+// app.use("admin/static/*", serveStatic({ root:'./public', }));
 
 app.get("/", (c: Context) => {
   return c.text("hello");
@@ -284,6 +291,64 @@ app.get('admin/gastoReal/year',async c => {
 return c.json({data,_refreshToken})
 
 })
+
+app.get("admin/generate-pdf", async (c) => {
+  // Crear un nuevo documento PDF
+  const pdfDoc = await PDFDocument.create();
+  const imageBytes = await Deno.readFile('public/sustentable_logo.png');
+  const logo_sustentable = await pdfDoc.embedPng(imageBytes)
+  const page = pdfDoc.addPage(PageSizes.A2);
+
+  // Configurar la fuente y el tamaño
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const fontSize = 15;
+
+  // Datos de la tabla
+  const client = await connect()
+  const data: GastoReal[] = await getGastoReal(client);
+  if(data.length <= 0) {
+    return c.text('no hay registros',201)
+  }
+
+  page.drawImage(logo_sustentable,{x:30,y:page.getHeight() - 300,width: logo_sustentable.width /4, height: logo_sustentable.height /4})
+  page.drawText(`fecha emision: ${dayjs().tz('America/Caracas').format('DD/MM/YYYY HH:mm:ss a')}`,{x: page.getWidth()- 400,y:page.getHeight() - 60,size: fontSize +5})
+  // Dibujar la tabla en el PDF
+  let y = page.getHeight() - 350; // Posición inicial en Y
+  let x_header =  120
+  const espacio_col = 200
+  const keys = Object.keys(data[0]).filter(f=>f !== 'id')
+  for(const k of keys) {
+    page.drawText(k,{x:x_header,y, size: fontSize +2,lineHeight:5,font,color:rgb(0,0,0)})
+    x_header += espacio_col
+  }
+  y -= 20; 
+  data.forEach((row, rowIndex) => {
+    let x =  120; // Posición inicial en X
+    Object.entries(row).filter(([k,_])=> k !== 'id').forEach(([key,cell]) => {
+      page.drawText(String(key === 'fecha'? dayjs.tz(cell).format('DD/MM/YYYY'): cell), {
+        x,
+        y,
+        size: fontSize,
+        font,
+        color: rgb(0, 0, 0),
+      });
+      x += espacio_col; // Espacio entre columnas
+    });
+    y -= 20; // Espacio entre filas
+  });
+
+  // Guardar el PDF en un buffer
+  const pdfBytes = await pdfDoc.save();
+  await client.close()
+  // Devolver el PDF como respuesta
+  return new Response(pdfBytes, {
+    headers: {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attachment; filename=Consumo_Real.pdf",
+    },
+  });
+});
+
 
 export { app };
 
