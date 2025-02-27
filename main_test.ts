@@ -292,11 +292,12 @@ Deno.test('pruebas login y dashboard',async ()=> {
         }     
     })
 
-    const dashboard = await resp2.text()
+    const dashboard = await resp2.json()
 
     console.log(dashboard)
     
     assert(resp2.ok)
+    assert(!!dashboard.meses_aviso)
 })
 
 

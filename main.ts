@@ -5,8 +5,6 @@ import dayjs from "@dayjs";
 import Timezone from "https://esm.sh/dayjs@1.11.13/plugin/timezone";
 import utc from "https://esm.sh/dayjs@1.11.13/plugin/utc";
 
-
-
 import { front_url, jwt_secret as secret } from "./utils/env.ts";
 import { Form, type GoogleAuthData } from "./models/Form.ts";
 import { calcular } from "./services/calcularData.ts";
@@ -34,13 +32,19 @@ import { GastoReal, GastoRealPojo } from "./models/GastoReal.ts";
 import {
   getGastoReal,
   getGastoRealByMonths,
+  getMesesAviso,
   insertGastoReal,
   updateGastoReal,
 } from "./db/GastoReal.ts";
-import { PDFDocument, PageSizes, StandardFonts, rgb } from "https://cdn.skypack.dev/pdf-lib@^1.17.1?dts";
+import {
+  PageSizes,
+  PDFDocument,
+  rgb,
+  StandardFonts,
+} from "https://cdn.skypack.dev/pdf-lib@^1.17.1?dts";
 const app = new Hono<{ Variables: JwtVariables }>();
-dayjs.extend(utc)
-dayjs.extend(Timezone)
+dayjs.extend(utc);
+dayjs.extend(Timezone);
 app.use("/*", cors({ origin: "*" }));
 app.use("/admin/*", (c, next) => {
   const jwtMiddleware = jwt({
@@ -157,12 +161,22 @@ app.get("/admin/dashboard", async (c) => {
   }, secret); // pasar al front
   //consultar en bd la data
   const registros = await getTotalRegistros(client);
+  const [estudiante, mantenimiento, personal, profesor, visitante] = await Promise
+    .all(
+      [
+        getTotalRegistrosByTipo(client, "estudiante"),
+        getTotalRegistrosByTipo(client, "mantenimiento"),
+        getTotalRegistrosByTipo(client, "personal"),
+        getTotalRegistrosByTipo(client, "profesor"),
+        getTotalRegistrosByTipo(client, "visitante"),
+      ],
+    );
   const registros_persona: RegistroByTipo = {
-    estudiante: await getTotalRegistrosByTipo(client, "estudiante"),
-    mantenimiento: await getTotalRegistrosByTipo(client, "mantenimiento"),
-    personal: await getTotalRegistrosByTipo(client, "personal"),
-    profesor: await getTotalRegistrosByTipo(client, "profesor"),
-    visitante: await getTotalRegistrosByTipo(client, "visitante"),
+    estudiante, 
+    mantenimiento,
+    personal,
+    profesor,
+    visitante
   };
   const [
     centro_mantenimiento,
@@ -211,6 +225,8 @@ app.get("/admin/dashboard", async (c) => {
     rectorado,
     Vivero,
   };
+
+  const meses_aviso = await getMesesAviso(client);
   client.close();
 
   const data = calculateDashboardInfo(
@@ -218,13 +234,13 @@ app.get("/admin/dashboard", async (c) => {
     registros_bloque,
     registros_persona,
   );
-  return c.json({ data, _refreshToken });
+  return c.json({ data, _refreshToken, meses_aviso });
 });
 
 app.post("/admin/gastoReal", async (c) => {
   const client = await connect();
   const body: GastoRealPojo = await c.req.json();
-  console.log({body})
+  console.log({ body });
   const gasto_real: GastoReal = {
     ...body,
     agua_suministrada: body.agua_comprada + body.agua_recolectada,
@@ -244,7 +260,7 @@ app.get("admin/gastoReal", async (c) => {
     (gr) => ({
       ...gr,
       fecha: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").format(),
-    })
+    }),
   );
   const payload = c.get("jwtPayload");
 
@@ -276,27 +292,26 @@ app.put("admin/gastoReal", async (c) => {
   return c.text("registro actualizado satisfactoriamente");
 });
 
-app.get('admin/gastoReal/year',async c => {
+app.get("admin/gastoReal/year", async (c) => {
   const payload = c.get("jwtPayload");
 
-  const client = await connect()
-  
-  const data = await getGastoRealByMonths(client)
+  const client = await connect();
+
+  const data = await getGastoRealByMonths(client);
   const _refreshToken = await sign({
     ...payload,
     password: "",
     timeout: dayjs().add(30, "minute").format(),
   }, secret);
-  client.close()
-return c.json({data,_refreshToken})
-
-})
+  client.close();
+  return c.json({ data, _refreshToken });
+});
 
 app.get("admin/generate-pdf", async (c) => {
   // Crear un nuevo documento PDF
   const pdfDoc = await PDFDocument.create();
-  const imageBytes = await Deno.readFile('public/sustentable_logo.png');
-  const logo_sustentable = await pdfDoc.embedPng(imageBytes)
+  const imageBytes = await Deno.readFile("public/sustentable_logo.png");
+  const logo_sustentable = await pdfDoc.embedPng(imageBytes);
   const page = pdfDoc.addPage(PageSizes.A2);
 
   // Configurar la fuente y el tamaño
@@ -304,42 +319,64 @@ app.get("admin/generate-pdf", async (c) => {
   const fontSize = 15;
 
   // Datos de la tabla
-  const client = await connect()
+  const client = await connect();
   const data: GastoReal[] = await getGastoReal(client);
-  if(data.length <= 0) {
-    return c.text('no hay registros',201)
+  if (data.length <= 0) {
+    return c.text("no hay registros", 201);
   }
 
-  page.drawImage(logo_sustentable,{x:30,y:page.getHeight() - 300,width: logo_sustentable.width /4, height: logo_sustentable.height /4})
-  page.drawText(`fecha emision: ${dayjs().tz('America/Caracas').format('DD/MM/YYYY HH:mm:ss a')}`,{x: page.getWidth()- 400,y:page.getHeight() - 60,size: fontSize +5})
+  page.drawImage(logo_sustentable, {
+    x: 30,
+    y: page.getHeight() - 300,
+    width: logo_sustentable.width / 4,
+    height: logo_sustentable.height / 4,
+  });
+  page.drawText(
+    `fecha emision: ${
+      dayjs().tz("America/Caracas").format("DD/MM/YYYY HH:mm:ss a")
+    }`,
+    { x: page.getWidth() - 400, y: page.getHeight() - 60, size: fontSize + 5 },
+  );
   // Dibujar la tabla en el PDF
   let y = page.getHeight() - 350; // Posición inicial en Y
-  let x_header =  120
-  const espacio_col = 200
-  const keys = Object.keys(data[0]).filter(f=>f !== 'id')
-  for(const k of keys) {
-    page.drawText(k,{x:x_header,y, size: fontSize +2,lineHeight:5,font,color:rgb(0,0,0)})
-    x_header += espacio_col
-  }
-  y -= 20; 
-  data.forEach((row, rowIndex) => {
-    let x =  120; // Posición inicial en X
-    Object.entries(row).filter(([k,_])=> k !== 'id').forEach(([key,cell]) => {
-      page.drawText(String(key === 'fecha'? dayjs.tz(cell).format('DD/MM/YYYY'): cell), {
-        x,
-        y,
-        size: fontSize,
-        font,
-        color: rgb(0, 0, 0),
-      });
-      x += espacio_col; // Espacio entre columnas
+  let x_header = 120;
+  const espacio_col = 200;
+  const keys = Object.keys(data[0]).filter((f) => f !== "id");
+  for (const k of keys) {
+    page.drawText(k, {
+      x: x_header,
+      y,
+      size: fontSize + 2,
+      lineHeight: 5,
+      font,
+      color: rgb(0, 0, 0),
     });
+    x_header += espacio_col;
+  }
+  y -= 20;
+  data.forEach((row, rowIndex) => {
+    let x = 120; // Posición inicial en X
+    Object.entries(row).filter(([k, _]) => k !== "id").forEach(
+      ([key, cell]) => {
+        page.drawText(
+          String(key === "fecha" ? dayjs.tz(cell).format("DD/MM/YYYY") : cell),
+          {
+            x,
+            y,
+            size: fontSize,
+            font,
+            color: rgb(0, 0, 0),
+          },
+        );
+        x += espacio_col; // Espacio entre columnas
+      },
+    );
     y -= 20; // Espacio entre filas
   });
 
   // Guardar el PDF en un buffer
   const pdfBytes = await pdfDoc.save();
-  await client.close()
+  await client.close();
   // Devolver el PDF como respuesta
   return new Response(pdfBytes, {
     headers: {
@@ -348,7 +385,6 @@ app.get("admin/generate-pdf", async (c) => {
     },
   });
 });
-
 
 export { app };
 

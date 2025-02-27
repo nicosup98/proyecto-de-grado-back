@@ -17,3 +17,7 @@ export function getGastoReal(client: Client) {
 export function getGastoRealByMonths(client: Client, year = 2025) {
   return client.query(`select MONTH(cr.fecha)as mes_num,MONTHNAME(cr.fecha) as mes, sum(cr.agua_suministrada) as agua_suministrada,sum(cr.agua_gastada) as agua_gastada from Consumo_real cr where YEAR(DATE(cr.fecha)) = ${year} group by MONTH(cr.fecha ), MONTHNAME(cr.fecha) order by MONTH(cr.fecha) asc`)
 }
+
+export function getMesesAviso(client: Client, limite= 1000) {
+  return client.query(`select year(cr.fecha) as anio, monthname(cr.fecha) as mes, MONTH(cr.fecha) as mes_number, sum(cr.agua_gastada) as gasto_agua from Consumo_real cr group by anio,mes_number, mes having sum(cr.agua_gastada) >= ${limite} order by mes_number, anio  asc`)
+}
