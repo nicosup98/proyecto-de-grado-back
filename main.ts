@@ -159,6 +159,7 @@ app.get("/admin/dashboard", async (c) => {
     password: "",
     timeout: dayjs().add(30, "minute").format(),
   }, secret); // pasar al front
+  await client.execute("SET lc_time_names = 'es_ES'")
   //consultar en bd la data
   const registros = await getTotalRegistros(client);
   const [estudiante, mantenimiento, personal, profesor, visitante] = await Promise
@@ -226,7 +227,6 @@ app.get("/admin/dashboard", async (c) => {
     Vivero,
   };
 
-  const meses_aviso = await getMesesAviso(client);
   client.close();
 
   const data = calculateDashboardInfo(
@@ -234,7 +234,7 @@ app.get("/admin/dashboard", async (c) => {
     registros_bloque,
     registros_persona,
   );
-  return c.json({ data, _refreshToken, meses_aviso });
+  return c.json({ data, _refreshToken });
 });
 
 app.post("/admin/gastoReal", async (c) => {
@@ -259,7 +259,7 @@ app.get("admin/gastoReal", async (c) => {
   const data: GastoReal[] = (await getGastoReal(client) as GastoReal[]).map(
     (gr) => ({
       ...gr,
-      fecha: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").format(),
+      fecha: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").format('DD/MM/YY'),
     }),
   );
   const payload = c.get("jwtPayload");
@@ -296,7 +296,7 @@ app.get("admin/gastoReal/year", async (c) => {
   const payload = c.get("jwtPayload");
 
   const client = await connect();
-
+  client.execute("SET lc_time_names = 'es_ES';")
   const data = await getGastoRealByMonths(client);
   const _refreshToken = await sign({
     ...payload,
@@ -385,6 +385,24 @@ app.get("admin/generate-pdf", async (c) => {
     },
   });
 });
+
+app.get('admin/meses/aviso',async c=>{
+  const payload = c.get("jwtPayload");
+
+  if (dayjs().isAfter(dayjs(payload.timeout))) {
+    return c.text("sesion expirada", 403);
+  }
+  const _refreshToken = await sign({
+    ...payload,
+    password: "",
+    timeout: dayjs().add(30, "minute").format(),
+  }, secret);
+  const client = await connect();
+  await client.execute("SET lc_time_names = 'es_ES';")
+  const meses_aviso = await getMesesAviso(client);
+
+  return c.json({meses_aviso,_refreshToken})
+})
 
 export { app };
 
