@@ -259,7 +259,8 @@ app.get("admin/gastoReal", async (c) => {
   const data: GastoReal[] = (await getGastoReal(client) as GastoReal[]).map(
     (gr) => ({
       ...gr,
-      fecha: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").format('DD/MM/YY'),
+      fecha: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").toISOString(),
+      fecha_mostrar: dayjs(gr.fecha,"YYYY-MM-DDTHH:mm:ssZ[Z]").format('DD-MM-YYYY')
     }),
   );
   const payload = c.get("jwtPayload");

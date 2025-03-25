@@ -5,6 +5,7 @@ export interface GastoReal {
   agua_recolectada: number
   agua_gastada: number
   fecha: string
+  fecha_mostrar:string
 }
 
 export type GastoRealPojo = Omit<GastoReal,'agua_suministrada'>
