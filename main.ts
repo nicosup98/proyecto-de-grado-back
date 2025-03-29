@@ -43,7 +43,6 @@ import {
   rgb,
   StandardFonts,
 } from "https://cdn.skypack.dev/pdf-lib@^1.17.1?dts";
-import { generatePDF } from "./services/pdf.ts"
 const app = new Hono<{ Variables: JwtVariables }>();
 dayjs.extend(utc);
 dayjs.extend(Timezone);
