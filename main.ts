@@ -349,9 +349,9 @@ app.get("admin/generate-pdf", async (c) => {
     }`,
     { x: page.getWidth() - 400, y: 60, size: fontSize + 5 },
   );
-  page.drawText('reportes', {
-    x: (page.getWidth() / 2) - 16,
-    size: fontSize + 3,
+  page.drawText('reportes de consumo de agua en urbe', {
+    x: (page.getWidth() / 2) - 200,
+    size: fontSize + 10,
     lineHeight:6,
     font,
     y: page.getHeight() - 250
