@@ -32,6 +32,7 @@ import { GastoReal, GastoRealPojo } from "./models/GastoReal.ts";
 import {
   getGastoReal,
   getGastoRealByMonths,
+  getLimite,
   getMesesAviso,
   insertGastoReal,
   updateGastoReal,
@@ -42,6 +43,7 @@ import {
   rgb,
   StandardFonts,
 } from "https://cdn.skypack.dev/pdf-lib@^1.17.1?dts";
+import { generatePDF } from "./services/pdf.ts"
 const app = new Hono<{ Variables: JwtVariables }>();
 dayjs.extend(utc);
 dayjs.extend(Timezone);
@@ -173,7 +175,7 @@ app.get("/admin/dashboard", async (c) => {
       ],
     );
   const registros_persona: RegistroByTipo = {
-    estudiante, 
+    estudiante,
     mantenimiento,
     personal,
     profesor,
@@ -260,7 +262,7 @@ app.get("admin/gastoReal", async (c) => {
     (gr) => ({
       ...gr,
       fecha: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").toISOString(),
-      fecha_mostrar: dayjs(gr.fecha,"YYYY-MM-DDTHH:mm:ssZ[Z]").format('DD-MM-YYYY')
+      fecha_mostrar: dayjs(gr.fecha, "YYYY-MM-DDTHH:mm:ssZ[Z]").format('DD-MM-YYYY')
     }),
   );
   const payload = c.get("jwtPayload");
@@ -312,7 +314,9 @@ app.get("admin/generate-pdf", async (c) => {
   // Crear un nuevo documento PDF
   const pdfDoc = await PDFDocument.create();
   const imageBytes = await Deno.readFile("public/sustentable_logo.png");
+  const imageBytes2 = await Deno.readFile("public/urbe_logo.png");
   const logo_sustentable = await pdfDoc.embedPng(imageBytes);
+  const logo_urbe = await pdfDoc.embedPng(imageBytes2)
   const page = pdfDoc.addPage(PageSizes.A2);
 
   // Configurar la fuente y el tamaño
@@ -326,18 +330,33 @@ app.get("admin/generate-pdf", async (c) => {
     return c.text("no hay registros", 201);
   }
 
+  const logo_sustentable_w = logo_sustentable.width / 10
+  const logo_sustentable_h = logo_sustentable.height / 10
+
   page.drawImage(logo_sustentable, {
-    x: 30,
-    y: page.getHeight() - 300,
-    width: logo_sustentable.width / 4,
-    height: logo_sustentable.height / 4,
+    x: page.getWidth() - logo_sustentable_w - 30,
+    y: page.getHeight() - logo_sustentable_h - 30,
+    width: logo_sustentable_w,
+    height: logo_sustentable_h,
   });
+  page.drawImage(logo_urbe, {
+    x: 30,
+    y: page.getHeight() - 150,
+    width: logo_urbe.width / 30,
+    height: logo_urbe.height / 30
+  })
   page.drawText(
-    `fecha emision: ${
-      dayjs().tz("America/Caracas").format("DD/MM/YYYY HH:mm:ss a")
+    `fecha emision: ${dayjs().tz("America/Caracas").format("DD/MM/YYYY HH:mm:ss a")
     }`,
-    { x: page.getWidth() - 400, y: page.getHeight() - 60, size: fontSize + 5 },
+    { x: page.getWidth() - 400, y: 60, size: fontSize + 5 },
   );
+  page.drawText('reportes', {
+    x: (page.getWidth() / 2) - 16,
+    size: fontSize + 3,
+    lineHeight:6,
+    font,
+    y: page.getHeight() - 250
+  })
   // Dibujar la tabla en el PDF
   let y = page.getHeight() - 350; // Posición inicial en Y
   let x_header = 120;
@@ -387,7 +406,7 @@ app.get("admin/generate-pdf", async (c) => {
   });
 });
 
-app.get('admin/meses/aviso',async c=>{
+app.get('admin/meses/aviso', async c => {
   const payload = c.get("jwtPayload");
 
   if (dayjs().isAfter(dayjs(payload.timeout))) {
@@ -400,9 +419,11 @@ app.get('admin/meses/aviso',async c=>{
   }, secret);
   const client = await connect();
   await client.execute("SET lc_time_names = 'es_ES';")
-  const meses_aviso = await getMesesAviso(client);
+  const [limiteRecord] = await getLimite(client)
+  const meses_aviso = await getMesesAviso(client, limiteRecord.limite);
+  client.close()
 
-  return c.json({meses_aviso,_refreshToken})
+  return c.json({ meses_aviso, _refreshToken })
 })
 
 export { app };
